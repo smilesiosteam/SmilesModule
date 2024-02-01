@@ -11,13 +11,14 @@ let package = Package(
             name: "SmilesMonoRepo",
             targets: ["SmilesMonoRepo"]),
     ],
+    dependencies: [
+        .package(path: "SmilesFontsManager")
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "SmilesMonoRepo"),
-        .testTarget(
-            name: "SmilesMonoRepoTests",
-            dependencies: ["SmilesMonoRepo"]),
+        .target(name: "SmilesMonoRepo"),
+        .target(name: "SmilesFontsManager", dependencies: [], path: "SmilesFontsManager/Sources/"),
+        .testTarget(name: "SmilesMonoRepoTests", dependencies: ["SmilesMonoRepo"]),
     ]
 )
