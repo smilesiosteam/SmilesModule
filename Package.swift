@@ -5,11 +5,12 @@ import PackageDescription
 
 let package = Package(
     name: "SmilesMonoRepo",
+    platforms: [
+        .iOS(.v13)
+    ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(
-            name: "SmilesMonoRepo",
-            targets: ["SmilesMonoRepo"]),
+        .library(name: "SmilesMonoRepo", targets: ["SmilesFontsManager"]),
     ],
     dependencies: [
         .package(path: "SmilesFontsManager")
