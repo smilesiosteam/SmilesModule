@@ -10,18 +10,15 @@ let package = Package(
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(name: "SmilesMonoRepo", targets: ["SmilesMonoRepo"]),
+        .library(name: "SmilesMonoRepo", targets: ["SmilesFontsManager"]),
     ],
-    dependencies: [
-        .package(name: "SmilesFontsManager", path: "SmilesFontsManager")
-    ],
+//    dependencies: [
+//        .package(name: "SmilesFontsManager", path: "SmilesFontsManager")
+//    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "SmilesMonoRepo",
-            dependencies: [
-                .product(name: "SmilesFontsManager", package: "SmilesFontsManager")
-            ])
+        .target(name: "SmilesMonoRepo"),
+        .target(name: "SmilesFontsManager", dependencies: [], path: "SmilesFontsManager/Sources/SmilesFontsManager/")
     ]
 )
