@@ -24,6 +24,7 @@ let package = Package(
         .target(
             name: "SmilesFontsManager",
             dependencies: [],
+            path: "Sources/SmilesFontsManager",
             resources: [.process("Fonts")])
     ]
 )
