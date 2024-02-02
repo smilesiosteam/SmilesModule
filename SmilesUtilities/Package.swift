@@ -26,10 +26,10 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "SmilesUtilities",
-            dependencies: ["SmilesLanguageManager","SmilesFontsManager",
-                .product(name: "CryptoSwift", package: "CryptoSwift"),
-                .product(name: "SkeletonView", package: "SkeletonView"),
-                .product(name: "SDWebImage", package: "SDWebImage"),
+            dependencies: ["SmilesLanguageManager","SmilesFontsManager","CryptoSwift", "SkeletonView","SDWebImage"
+//                .product(name: "CryptoSwift", package: "CryptoSwift"),
+//                .product(name: "SkeletonView", package: "SkeletonView"),
+//                .product(name: "SDWebImage", package: "SDWebImage"),
             ],
             path: "Sources/SmilesUtilities"),
         .testTarget(
