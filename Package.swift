@@ -15,7 +15,7 @@ let package = Package(
                     "SmilesFontsManager",
                     //"SmilesUtilities",
                     "SmilesStorage",
-                    //"SmilesLanguageManager",
+                    "SmilesLanguageManager",
                  ]),
     ],
 //    dependencies: [
@@ -28,6 +28,6 @@ let package = Package(
         .target(name: "SmilesFontsManager", dependencies: [], path: "SmilesFontsManager/Sources/SmilesFontsManager/"),
         //.target(name: "SmilesUtilities", dependencies: [], path: "SmilesUtilities/Sources/SmilesUtilities/"),
         .target(name: "SmilesStorage", dependencies: [], path: "SmilesStorage/Sources/SmilesStorage/"),
-        //.target(name: "SmilesLanguageManager", dependencies: [], path: "SmilesLanguageManager/Sources/SmilesLanguageManager/"),
+        .target(name: "SmilesLanguageManager", dependencies: ["SmilesStorage"], path: "SmilesLanguageManager/Sources/SmilesLanguageManager/"),
     ]
 )
