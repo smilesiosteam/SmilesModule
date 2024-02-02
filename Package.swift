@@ -18,9 +18,11 @@ let package = Package(
                     "SmilesLanguageManager",
                  ]),
     ],
-//    dependencies: [
-//        .package(name: "SmilesFontsManager", path: "SmilesFontsManager")
-//    ],
+    dependencies: [
+        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.0")),
+        .package(url: "https://github.com/Juanpe/SkeletonView.git", from: "1.7.0"),
+        .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0"),
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
@@ -30,7 +32,11 @@ let package = Package(
                 dependencies: ["SmilesLanguageManager",], path: "SmilesUtilities/Sources/SmilesUtilities/"),
         .target(name: "SmilesStorage", dependencies: [], path: "SmilesStorage/Sources/SmilesStorage/"),
         .target(name: "SmilesLanguageManager",
-                dependencies: ["SmilesStorage", "SmilesFontsManager"],
+                dependencies: ["SmilesStorage",
+                               "SmilesFontsManager",
+                               "CryptoSwift",
+                               "SkeletonView",
+                               "SDWebImage"],
                 path: "SmilesLanguageManager/Sources/SmilesLanguageManager/"),
     ]
 )
