@@ -13,7 +13,7 @@ let package = Package(
         .SmilesUtilities,
         .SmilesStorage,
         .SmilesLanguageManager,
-        .SmilesBaseMainRequest,
+        .SmilesBaseMainRequestManager,
         .NetworkingLayer
     ],
     dependencies: [
@@ -30,7 +30,7 @@ let package = Package(
         .SmilesUtilities,
         .SmilesLoader,
         .SmilesLanguageManager,
-        .SmilesBaseMainRequest,
+        .SmilesBaseMainRequestManager,
         .NetworkingLayer,
     ]
 )
@@ -44,7 +44,7 @@ extension String {
     static let SmilesLanguageManager = "SmilesLanguageManager"
     static let SmilesLoader = "SmilesLoader"
     static let NetworkingLayer = "NetworkingLayer"
-    static let SmilesBaseMainRequest = "SmilesBaseMainRequest"
+    static let SmilesBaseMainRequestManager = "SmilesBaseMainRequestManager"
     static let SmilesSharedServices = "SmilesSharedServices"
 
     enum Prefixed {
@@ -62,7 +62,7 @@ extension Product {
     static let SmilesStorage = library(name: .SmilesStorage, targets: [.SmilesStorage])
     static let SmilesLoader = library(name: .SmilesLoader, targets: [.SmilesLoader])
     static let SmilesLanguageManager = library(name: .SmilesLanguageManager, targets: [.SmilesLanguageManager, .Prefixed.SmilesLanguageManager])
-    static let SmilesBaseMainRequest = library(name: .SmilesBaseMainRequest, targets: [.SmilesBaseMainRequest, .SmilesBaseMainRequest])
+    static let SmilesBaseMainRequest = library(name: .SmilesBaseMainRequestManager, targets: [.SmilesBaseMainRequestManager, .SmilesBaseMainRequestManager])
     static let SmilesSharedServices = library(name: .SmilesSharedServices, targets: [.SmilesSharedServices, .SmilesSharedServices])
     static let NetworkingLayer = library(name: .NetworkingLayer, targets: [.NetworkingLayer, .NetworkingLayer])
 }
@@ -95,17 +95,17 @@ extension Target {
                                             .NVActivityIndicatorView],
                                         path: "SmilesLoader/Sources/SmilesLoader/")
     
-    static let SmilesBaseMainRequest = target(name: .SmilesBaseMainRequest,
+    static let SmilesBaseMainRequestManager = target(name: .SmilesBaseMainRequestManager,
                                         dependencies: [.SmilesUtilities],
                                         path: "SmilesBaseMainRequest/Sources/SmilesBaseMainRequest/")
     
     static let SmilesSharedServices = target(name: .SmilesSharedServices,
-                                             dependencies: [.SmilesBaseMainRequest,
+                                             dependencies: [.SmilesBaseMainRequestManager,
                                                             .NetworkingLayer],
                                         path: "SmilesSharedServices/Sources/SmilesSharedServices/")
     
     static let NetworkingLayer = target(name: .NetworkingLayer,
-                                        dependencies: [.SmilesBaseMainRequest,
+                                        dependencies: [.SmilesBaseMainRequestManager,
                                                        .SmilesLanguageManager,
                                                        .SmilesStorage,
                                                        .SmilesUtilities,
@@ -120,7 +120,7 @@ extension Target.Dependency {
     static let SmilesUtilities = byName(name: .SmilesUtilities)
     static let SmilesStorage = byName(name: .SmilesStorage)
     static let SmilesLanguageManager = byName(name: .SmilesLanguageManager)
-    static let SmilesBaseMainRequest = byName(name: .SmilesBaseMainRequest)
+    static let SmilesBaseMainRequestManager = byName(name: .SmilesBaseMainRequestManager)
     static let NetworkingLayer = byName(name: .NetworkingLayer)
     static let CryptoSwift = byName(name: "CryptoSwift")
     static let SkeletonView = byName(name: "SkeletonView")
