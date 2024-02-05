@@ -62,7 +62,7 @@ extension Product {
     static let SmilesStorage = library(name: .SmilesStorage, targets: [.SmilesStorage])
     static let SmilesLoader = library(name: .SmilesLoader, targets: [.SmilesLoader])
     static let SmilesLanguageManager = library(name: .SmilesLanguageManager, targets: [.SmilesLanguageManager, .Prefixed.SmilesLanguageManager])
-    static let SmilesBaseMainRequest = library(name: .SmilesBaseMainRequestManager, targets: [.SmilesBaseMainRequestManager, .SmilesBaseMainRequestManager])
+    static let SmilesBaseMainRequestManager = library(name: .SmilesBaseMainRequestManager, targets: [.SmilesBaseMainRequestManager, .SmilesBaseMainRequestManager])
     static let SmilesSharedServices = library(name: .SmilesSharedServices, targets: [.SmilesSharedServices, .SmilesSharedServices])
     static let NetworkingLayer = library(name: .NetworkingLayer, targets: [.NetworkingLayer, .NetworkingLayer])
 }
