@@ -97,7 +97,7 @@ extension Target {
     
     static let SmilesBaseMainRequestManager = target(name: .SmilesBaseMainRequestManager,
                                         dependencies: [.SmilesUtilities],
-                                        path: "SmilesBaseMainRequest/Sources/SmilesBaseMainRequest/")
+                                        path: "SmilesBaseMainRequestManager/Sources/SmilesBaseMainRequestManager/")
     
     static let SmilesSharedServices = target(name: .SmilesSharedServices,
                                              dependencies: [.SmilesBaseMainRequestManager,
