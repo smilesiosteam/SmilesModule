@@ -343,5 +343,5 @@ extension Target.Dependency {
     static let SDWebImage = byName(name: "SDWebImage")
     static let NVActivityIndicatorView = byName(name: "NVActivityIndicatorView")
     static let Alamofire = byName(name: "Alamofire")
-    static let YoutubePlayer = byName(name: "youtube-ios-player-helper")
+    static let YoutubePlayer = byName(name: "YouTubeiOSPlayerHelper")
 }
