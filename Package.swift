@@ -336,7 +336,7 @@ extension Target.Dependency {
     static let DeviceAppCheck = byName(name: .DeviceAppCheck)
     static let SmilesOnboarding = byName(name: .SmilesOnboarding)
     
-    static let Lottie = byName(name: "Lottie")
+    static let Lottie = byName(name: "lottie-ios")
     static let CryptoSwift = byName(name: "CryptoSwift")
     static let SkeletonView = byName(name: "SkeletonView")
     static let SDWebImage = byName(name: "SDWebImage")
