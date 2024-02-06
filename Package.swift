@@ -46,6 +46,7 @@ extension String {
     static let NetworkingLayer = "NetworkingLayer"
     static let SmilesBaseMainRequestManager = "SmilesBaseMainRequestManager"
     static let SmilesSharedServices = "SmilesSharedServices"
+    static let SmilesEmailVerification = "SmilesEmailVerification"
 
     enum Prefixed {
         static let SmilesFontsManager = "SmilesFontsManager"
@@ -65,6 +66,7 @@ extension Product {
     static let SmilesBaseMainRequestManager = library(name: .SmilesBaseMainRequestManager, targets: [.SmilesBaseMainRequestManager, .SmilesBaseMainRequestManager])
     static let SmilesSharedServices = library(name: .SmilesSharedServices, targets: [.SmilesSharedServices, .SmilesSharedServices])
     static let NetworkingLayer = library(name: .NetworkingLayer, targets: [.NetworkingLayer, .NetworkingLayer])
+    static let SmilesEmailVerification = library(name: .SmilesEmailVerification, targets: [.SmilesEmailVerification, .SmilesEmailVerification])
 }
 
 extension Target {
@@ -112,6 +114,17 @@ extension Target {
                                                        .Alamofire,
                                                        .CryptoSwift],
                                         path: "NetworkingLayer/Sources/NetworkingLayer/")
+    
+    static let SmilesEmailVerification = target(name: .SmilesEmailVerification,
+                                        dependencies: [.SmilesBaseMainRequestManager,
+                                                       .SmilesLanguageManager,
+                                                       .SmilesFontsManager,
+                                                       .SkeletonView,
+                                                       .SmilesUtilities,
+                                                       .NetworkingLayer,
+                                                       .SDWebImage,
+                                                       .CryptoSwift],
+                                        path: "SmilesEmailVerification/Sources/SmilesEmailVerification/")
 }
 
 
@@ -122,6 +135,7 @@ extension Target.Dependency {
     static let SmilesLanguageManager = byName(name: .SmilesLanguageManager)
     static let SmilesBaseMainRequestManager = byName(name: .SmilesBaseMainRequestManager)
     static let NetworkingLayer = byName(name: .NetworkingLayer)
+    static let SmilesEmailVerification = byName(name: .SmilesEmailVerification)
     static let CryptoSwift = byName(name: "CryptoSwift")
     static let SkeletonView = byName(name: "SkeletonView")
     static let SDWebImage = byName(name: "SDWebImage")
