@@ -11,12 +11,15 @@ let package = Package(
     products: [
         .SmilesFontsManager,
         .SmilesUtilities,
+        .SmilesLoader,
         .SmilesStorage,
         .SmilesLanguageManager,
         .SmilesBaseMainRequestManager,
         .NetworkingLayer,
         .SmilesEmailVerification,
         .LottieAnimationManager,
+        .SmilesStoriesManager,
+        .SmilesSharedServices,
     ],
     dependencies: [
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.0")),
@@ -37,6 +40,8 @@ let package = Package(
         .NetworkingLayer,
         .SmilesEmailVerification,
         .LottieAnimationManager,
+        .SmilesStoriesManager,
+        .SmilesSharedServices,
     ]
 )
 
@@ -53,6 +58,7 @@ extension String {
     static let SmilesSharedServices = "SmilesSharedServices"
     static let SmilesEmailVerification = "SmilesEmailVerification"
     static let LottieAnimationManager = "LottieAnimationManager"
+    static let SmilesStoriesManager = "SmilesStoriesManager"
 
     enum Prefixed {
         static let SmilesFontsManager = "SmilesFontsManager"
@@ -73,8 +79,8 @@ extension Product {
     static let SmilesSharedServices = library(name: .SmilesSharedServices, targets: [.SmilesSharedServices])
     static let NetworkingLayer = library(name: .NetworkingLayer, targets: [.NetworkingLayer])
     static let SmilesEmailVerification = library(name: .SmilesEmailVerification, targets: [.SmilesEmailVerification])
-    
     static let LottieAnimationManager = library(name: .LottieAnimationManager, targets: [.LottieAnimationManager])
+    static let SmilesStoriesManager = library(name: .SmilesStoriesManager, targets: [.SmilesStoriesManager])
 }
 
 extension Target {
@@ -82,14 +88,14 @@ extension Target {
     static let SmilesMonoRepo = target(name: .SmilesMonoRepo)
     
     static let SmilesStorage = target(name: .SmilesStorage, dependencies: [],
-                                           path: "SmilesStorage/Sources/SmilesStorage/")
+                                           path: "SmilesStorage/Sources")
     
     static let SmilesLanguageManager = target(name: .SmilesLanguageManager, 
                                               dependencies: [.SmilesStorage],
-                                              path: "SmilesLanguageManager/Sources/SmilesLanguageManager/")
+                                              path: "SmilesLanguageManager/Sources")
     
     static let SmilesFontsManager = target(name: .SmilesFontsManager, dependencies: [],
-                                           path: "SmilesFontsManager/Sources/SmilesFontsManager/")
+                                           path: "SmilesFontsManager/Sources")
     
     static let SmilesUtilities = target(name: .SmilesUtilities,
                                         dependencies: [.SmilesFontsManager, 
@@ -97,22 +103,22 @@ extension Target {
                                             .CryptoSwift,
                                             .SkeletonView,
                                             .SDWebImage],
-                                        path: "SmilesUtilities/Sources/SmilesUtilities/")
+                                        path: "SmilesUtilities/Sources")
     
     static let SmilesLoader = target(name: .SmilesLoader,
                                         dependencies: [.SmilesFontsManager, 
                                             .SmilesUtilities,
                                             .NVActivityIndicatorView],
-                                        path: "SmilesLoader/Sources/SmilesLoader/")
+                                        path: "SmilesLoader/Sources")
     
     static let SmilesBaseMainRequestManager = target(name: .SmilesBaseMainRequestManager,
                                         dependencies: [.SmilesUtilities],
-                                        path: "SmilesBaseMainRequestManager/Sources/SmilesBaseMainRequestManager/")
+                                        path: "SmilesBaseMainRequestManager")
     
     static let SmilesSharedServices = target(name: .SmilesSharedServices,
                                              dependencies: [.SmilesBaseMainRequestManager,
                                                             .NetworkingLayer],
-                                        path: "SmilesSharedServices/Sources/SmilesSharedServices/")
+                                        path: "SmilesSharedServices/Sources")
     
     static let NetworkingLayer = target(name: .NetworkingLayer,
                                         dependencies: [.SmilesBaseMainRequestManager,
@@ -121,7 +127,7 @@ extension Target {
                                                        .SmilesUtilities,
                                                        .Alamofire,
                                                        .CryptoSwift],
-                                        path: "NetworkingLayer/Sources/NetworkingLayer/")
+                                        path: "NetworkingLayer/Sources")
     
     static let SmilesEmailVerification = target(name: .SmilesEmailVerification,
                                         dependencies: [.SmilesBaseMainRequestManager,
@@ -132,7 +138,18 @@ extension Target {
                                                        .NetworkingLayer,
                                                        .SDWebImage,
                                                        .CryptoSwift],
-                                        path: "SmilesEmailVerification/Sources/SmilesEmailVerification/")
+                                        path: "SmilesEmailVerification/Sources")
+    
+    static let SmilesStoriesManager = target(name: .SmilesStoriesManager,
+                                        dependencies: [.SmilesBaseMainRequestManager,
+                                                       .SmilesLanguageManager,
+                                                       .SmilesFontsManager,
+                                                       .LottieAnimationManager,
+                                                       .SmilesSharedServices,
+                                                       .SmilesUtilities,
+                                                       .NetworkingLayer,
+                                                       .SmilesLoader],
+                                        path: "SmilesStoriesManager/Sources")
     
     static let LottieAnimationManager = target(name: .LottieAnimationManager,
                                         path: "LottieAnimationManager/Sources")
@@ -148,10 +165,13 @@ extension Target.Dependency {
     static let NetworkingLayer = byName(name: .NetworkingLayer)
     static let SmilesEmailVerification = byName(name: .SmilesEmailVerification)
     static let LottieAnimationManager = byName(name: .LottieAnimationManager)
+    static let SmilesStoriesManager = byName(name: .SmilesStoriesManager)
+    static let SmilesLoader = byName(name: .SmilesLoader)
+    static let SmilesSharedServices = byName(name: .SmilesSharedServices)
+    
     static let CryptoSwift = byName(name: "CryptoSwift")
     static let SkeletonView = byName(name: "SkeletonView")
     static let SDWebImage = byName(name: "SDWebImage")
     static let NVActivityIndicatorView = byName(name: "NVActivityIndicatorView")
     static let Alamofire = byName(name: "Alamofire")
-    static let Lottie = byName(name: "Lottie")
 }
