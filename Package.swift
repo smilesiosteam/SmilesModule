@@ -16,6 +16,7 @@ let package = Package(
         .SmilesBaseMainRequestManager,
         .NetworkingLayer,
         .SmilesEmailVerification,
+        .LottieAnimationManager,
     ],
     dependencies: [
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.0")),
@@ -34,6 +35,7 @@ let package = Package(
         .SmilesBaseMainRequestManager,
         .NetworkingLayer,
         .SmilesEmailVerification,
+        .LottieAnimationManager,
     ]
 )
 
@@ -49,6 +51,7 @@ extension String {
     static let SmilesBaseMainRequestManager = "SmilesBaseMainRequestManager"
     static let SmilesSharedServices = "SmilesSharedServices"
     static let SmilesEmailVerification = "SmilesEmailVerification"
+    static let LottieAnimationManager = "LottieAnimationManager"
 
     enum Prefixed {
         static let SmilesFontsManager = "SmilesFontsManager"
@@ -69,6 +72,8 @@ extension Product {
     static let SmilesSharedServices = library(name: .SmilesSharedServices, targets: [.SmilesSharedServices, .SmilesSharedServices])
     static let NetworkingLayer = library(name: .NetworkingLayer, targets: [.NetworkingLayer, .NetworkingLayer])
     static let SmilesEmailVerification = library(name: .SmilesEmailVerification, targets: [.SmilesEmailVerification, .SmilesEmailVerification])
+    
+    static let LottieAnimationManager = library(name: .LottieAnimationManager, targets: [.LottieAnimationManager, .LottieAnimationManager])
 }
 
 extension Target {
@@ -127,6 +132,10 @@ extension Target {
                                                        .SDWebImage,
                                                        .CryptoSwift],
                                         path: "SmilesEmailVerification/Sources/SmilesEmailVerification/")
+    
+    static let LottieAnimationManager = target(name: .LottieAnimationManager,
+                                             dependencies: [.Lottie],
+                                        path: "LottieAnimationManager/Sources/LottieAnimationManager/")
 }
 
 
@@ -138,9 +147,11 @@ extension Target.Dependency {
     static let SmilesBaseMainRequestManager = byName(name: .SmilesBaseMainRequestManager)
     static let NetworkingLayer = byName(name: .NetworkingLayer)
     static let SmilesEmailVerification = byName(name: .SmilesEmailVerification)
+    static let LottieAnimationManager = byName(name: .LottieAnimationManager)
     static let CryptoSwift = byName(name: "CryptoSwift")
     static let SkeletonView = byName(name: "SkeletonView")
     static let SDWebImage = byName(name: "SDWebImage")
     static let NVActivityIndicatorView = byName(name: "NVActivityIndicatorView")
     static let Alamofire = byName(name: "Alamofire")
+    static let Lottie = byName(name: "Lottie")
 }
