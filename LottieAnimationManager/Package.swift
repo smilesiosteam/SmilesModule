@@ -23,7 +23,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "LottieAnimationManager",
-            dependencies: ["Lottie"],
+            dependencies: [
+                .product(name: "Lottie", package: "lottie-ios")
+            ],
             path: "Sources"
         )
     ]
