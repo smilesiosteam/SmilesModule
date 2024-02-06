@@ -292,6 +292,7 @@ extension Target {
                                         path: "SmilesPersonalizationEvent/Sources")
     
     static let LottieAnimationManager = target(name: .LottieAnimationManager,
+                                               dependencies: [.Lottie],
                                         path: "LottieAnimationManager/Sources")
     
     static let SmilesYoutubePopUpView = target(name: .SmilesYoutubePopUpView,
@@ -335,6 +336,7 @@ extension Target.Dependency {
     static let DeviceAppCheck = byName(name: .DeviceAppCheck)
     static let SmilesOnboarding = byName(name: .SmilesOnboarding)
     
+    static let Lottie = byName(name: "Lottie")
     static let CryptoSwift = byName(name: "CryptoSwift")
     static let SkeletonView = byName(name: "SkeletonView")
     static let SDWebImage = byName(name: "SDWebImage")
