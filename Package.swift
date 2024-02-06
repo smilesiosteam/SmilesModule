@@ -20,6 +20,20 @@ let package = Package(
         .LottieAnimationManager,
         .SmilesStoriesManager,
         .SmilesSharedServices,
+        .AnalyticsSmiles,
+        .SmilesEasyTipView,
+        .SmilesLocationHandler,
+        .SmilesOffers,
+        .SmilesPageController,
+        .SmilesBanners,
+        .SmilesTutorials,
+        .SmilesScratchHandler,
+        .AppHeader,
+        .SmilesPersonalizationEvent,
+        .SmilesYoutubePopUpView,
+        .SmilesSubscriptionPromotion,
+        .DeviceAppCheck,
+        .SmilesOnboarding,
     ],
     dependencies: [
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.0")),
@@ -28,6 +42,7 @@ let package = Package(
         .package(url: "https://github.com/ninjaprox/NVActivityIndicatorView.git", from: "5.0.0"),
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.6.4")),
         .package(url: "https://github.com/airbnb/lottie-ios.git", exact: "3.5.0"),
+        .package(url:"https://github.com/youtube/youtube-ios-player-helper.git", from: "1.0.4"),
     ],
     targets: [
         .SmilesMonoRepo,
@@ -42,6 +57,20 @@ let package = Package(
         .LottieAnimationManager,
         .SmilesStoriesManager,
         .SmilesSharedServices,
+        .AnalyticsSmiles,
+        .SmilesEasyTipView,
+        .SmilesLocationHandler,
+        .SmilesOffers,
+        .SmilesPageController,
+        .SmilesBanners,
+        .SmilesTutorials,
+        .SmilesScratchHandler,
+        .AppHeader,
+        .SmilesPersonalizationEvent,
+        .SmilesYoutubePopUpView,
+        .SmilesSubscriptionPromotion,
+        .DeviceAppCheck,
+        .SmilesOnboarding,
     ]
 )
 
@@ -59,6 +88,20 @@ extension String {
     static let SmilesEmailVerification = "SmilesEmailVerification"
     static let LottieAnimationManager = "LottieAnimationManager"
     static let SmilesStoriesManager = "SmilesStoriesManager"
+    static let AnalyticsSmiles = "AnalyticsSmiles"
+    static let SmilesEasyTipView = "SmilesEasyTipView"
+    static let SmilesLocationHandler = "SmilesLocationHandler"
+    static let SmilesOffers = "SmilesOffers"
+    static let SmilesPageController = "SmilesPageController"
+    static let SmilesBanners = "SmilesBanners"
+    static let SmilesTutorials = "SmilesTutorials"
+    static let SmilesScratchHandler = "SmilesScratchHandler"
+    static let AppHeader = "AppHeader"
+    static let SmilesPersonalizationEvent = "SmilesPersonalizationEvent"
+    static let SmilesYoutubePopUpView = "SmilesYoutubePopUpView"
+    static let SmilesSubscriptionPromotion = "SmilesSubscriptionPromotion"
+    static let DeviceAppCheck = "DeviceAppCheck"
+    static let SmilesOnboarding = "SmilesOnboarding"
 
     enum Prefixed {
         static let SmilesFontsManager = "SmilesFontsManager"
@@ -81,6 +124,20 @@ extension Product {
     static let SmilesEmailVerification = library(name: .SmilesEmailVerification, targets: [.SmilesEmailVerification])
     static let LottieAnimationManager = library(name: .LottieAnimationManager, targets: [.LottieAnimationManager])
     static let SmilesStoriesManager = library(name: .SmilesStoriesManager, targets: [.SmilesStoriesManager])
+    static let AnalyticsSmiles = library(name: .AnalyticsSmiles, targets: [.AnalyticsSmiles])
+    static let SmilesEasyTipView = library(name: .SmilesEasyTipView, targets: [.SmilesEasyTipView])
+    static let SmilesLocationHandler = library(name: .SmilesLocationHandler, targets: [.SmilesLocationHandler])
+    static let SmilesOffers = library(name: .SmilesOffers, targets: [.SmilesOffers])
+    static let SmilesPageController = library(name: .SmilesPageController, targets: [.SmilesPageController])
+    static let SmilesBanners = library(name: .SmilesBanners, targets: [.SmilesBanners])
+    static let SmilesTutorials = library(name: .SmilesTutorials, targets: [.SmilesTutorials])
+    static let SmilesScratchHandler = library(name: .SmilesScratchHandler, targets: [.SmilesScratchHandler])
+    static let AppHeader = library(name: .AppHeader, targets: [.AppHeader])
+    static let SmilesPersonalizationEvent = library(name: .SmilesPersonalizationEvent, targets: [.SmilesPersonalizationEvent])
+    static let SmilesYoutubePopUpView = library(name: .SmilesYoutubePopUpView, targets: [.SmilesYoutubePopUpView])
+    static let SmilesSubscriptionPromotion = library(name: .SmilesSubscriptionPromotion, targets: [.SmilesSubscriptionPromotion])
+    static let DeviceAppCheck = library(name: .DeviceAppCheck, targets: [.DeviceAppCheck])
+    static let SmilesOnboarding = library(name: .SmilesOnboarding, targets: [.SmilesOnboarding])
 }
 
 extension Target {
@@ -120,6 +177,11 @@ extension Target {
                                                             .NetworkingLayer],
                                         path: "SmilesSharedServices/Sources")
     
+    static let SmilesEasyTipView = target(name: .SmilesEasyTipView,
+                                             dependencies: [.SmilesUtilities,
+                                                            .SmilesLanguageManager],
+                                        path: "SmilesEasyTipView/Sources")
+    
     static let NetworkingLayer = target(name: .NetworkingLayer,
                                         dependencies: [.SmilesBaseMainRequestManager,
                                                        .SmilesLanguageManager,
@@ -140,6 +202,18 @@ extension Target {
                                                        .CryptoSwift],
                                         path: "SmilesEmailVerification/Sources")
     
+    static let SmilesTutorials = target(name: .SmilesTutorials,
+                                        dependencies: [.SmilesBaseMainRequestManager,
+                                                       .SmilesLanguageManager,
+                                                       .SmilesFontsManager,
+                                                       .SkeletonView,
+                                                       .SmilesUtilities,
+                                                       .SmilesPageController,
+                                                       .SDWebImage,
+                                                       .CryptoSwift,
+                                                       .LottieAnimationManager],
+                                        path: "SmilesTutorials/Sources")
+    
     static let SmilesStoriesManager = target(name: .SmilesStoriesManager,
                                         dependencies: [.SmilesBaseMainRequestManager,
                                                        .SmilesLanguageManager,
@@ -151,8 +225,86 @@ extension Target {
                                                        .SmilesLoader],
                                         path: "SmilesStoriesManager/Sources")
     
+    static let SmilesOnboarding = target(name: .SmilesOnboarding,
+                                        dependencies: [.SmilesBaseMainRequestManager,
+                                                       .SmilesLanguageManager,
+                                                       .SmilesFontsManager,
+                                                       .LottieAnimationManager,
+                                                       .NetworkingLayer,
+                                                       .DeviceAppCheck,
+                                                       .SmilesLocationHandler,
+                                                       .SmilesLoader],
+                                        path: "SmilesOnboarding/Sources")
+    
+    static let SmilesLocationHandler = target(name: .SmilesLocationHandler,
+                                        dependencies: [.SmilesEasyTipView,
+                                                       .AnalyticsSmiles,
+                                                       .SmilesUtilities,
+                                                       .NetworkingLayer,
+                                                       .SmilesBaseMainRequestManager],
+                                        path: "SmilesLocationHandler/Sources")
+    
+    static let SmilesScratchHandler = target(name: .SmilesScratchHandler,
+                                        dependencies: [.SmilesFontsManager,
+                                                       .SmilesLanguageManager,
+                                                       .SmilesUtilities,
+                                                       .NetworkingLayer,
+                                                       .SmilesBaseMainRequestManager,
+                                                       .SmilesLoader],
+                                        path: "SmilesScratchHandler/Sources")
+    
+    static let SmilesSubscriptionPromotion = target(name: .SmilesSubscriptionPromotion,
+                                                    dependencies: [.SmilesYoutubePopUpView,
+                                                                   .SmilesSharedServices,
+                                                                   .SmilesOffers,
+                                                                   .SmilesBanners,
+                                                                   .SmilesFontsManager,
+                                                                   .SmilesLanguageManager,
+                                                                   .SmilesUtilities,
+                                                                   .SmilesStoriesManager,
+                                                                   .SmilesBaseMainRequestManager,
+                                                                   .SmilesLoader],
+                                        path: "SmilesSubscriptionPromotion/Sources")
+    
+    static let SmilesOffers = target(name: .SmilesOffers,
+                                        dependencies: [.LottieAnimationManager,
+                                                       .SmilesUtilities,
+                                                       .NetworkingLayer,
+                                                       .SmilesBaseMainRequestManager],
+                                        path: "SmilesOffers/Sources")
+    
+    static let SmilesBanners = target(name: .SmilesBanners,
+                                        dependencies: [.LottieAnimationManager,
+                                                       .SmilesPageController,
+                                                       .SmilesUtilities,
+                                                       .NetworkingLayer,
+                                                       .SmilesBaseMainRequestManager],
+                                        path: "SmilesBanners/Sources")
+    
+    static let AppHeader = target(name: .AppHeader,
+                                        dependencies: [.LottieAnimationManager,
+                                                       .SmilesLocationHandler],
+                                        path: "AppHeader/Sources")
+    
+    static let SmilesPersonalizationEvent = target(name: .SmilesPersonalizationEvent,
+                                        dependencies: [.SmilesUtilities,
+                                                       .NetworkingLayer],
+                                        path: "SmilesPersonalizationEvent/Sources")
+    
     static let LottieAnimationManager = target(name: .LottieAnimationManager,
                                         path: "LottieAnimationManager/Sources")
+    
+    static let SmilesYoutubePopUpView = target(name: .SmilesYoutubePopUpView,
+                                        path: "SmilesYoutubePopUpView/Sources")
+    
+    static let AnalyticsSmiles = target(name: .AnalyticsSmiles,
+                                        path: "AnalyticsSmiles/Sources")
+    
+    static let SmilesPageController = target(name: .SmilesPageController,
+                                        path: "SmilesPageController/Sources")
+    
+    static let DeviceAppCheck = target(name: .DeviceAppCheck,
+                                        path: "DeviceAppCheck/Sources")
 }
 
 
@@ -168,6 +320,20 @@ extension Target.Dependency {
     static let SmilesStoriesManager = byName(name: .SmilesStoriesManager)
     static let SmilesLoader = byName(name: .SmilesLoader)
     static let SmilesSharedServices = byName(name: .SmilesSharedServices)
+    static let AnalyticsSmiles = byName(name: .AnalyticsSmiles)
+    static let SmilesEasyTipView = byName(name: .SmilesEasyTipView)
+    static let SmilesLocationHandler = byName(name: .SmilesLocationHandler)
+    static let SmilesOffers = byName(name: .SmilesOffers)
+    static let SmilesPageController = byName(name: .SmilesPageController)
+    static let SmilesBanners = byName(name: .SmilesBanners)
+    static let SmilesTutorials = byName(name: .SmilesTutorials)
+    static let SmilesScratchHandler = byName(name: .SmilesScratchHandler)
+    static let AppHeader = byName(name: .AppHeader)
+    static let SmilesPersonalizationEvent = byName(name: .SmilesPersonalizationEvent)
+    static let SmilesYoutubePopUpView = byName(name: .SmilesYoutubePopUpView)
+    static let SmilesSubscriptionPromotion = byName(name: .SmilesSubscriptionPromotion)
+    static let DeviceAppCheck = byName(name: .DeviceAppCheck)
+    static let SmilesOnboarding = byName(name: .SmilesOnboarding)
     
     static let CryptoSwift = byName(name: "CryptoSwift")
     static let SkeletonView = byName(name: "SkeletonView")
