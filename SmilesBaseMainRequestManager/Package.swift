@@ -24,8 +24,10 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "SmilesBaseMainRequestManager",
-            dependencies: ["SmilesUtilities"],
-            path: "Sources/SmilesBaseMainRequestManager"
+            dependencies: [
+                .product(name: "SmilesUtilities", package: "SmilesUtilities")
+            ],
+            path: "Sources"
         )
 //        .testTarget(
 //            name: "SmilesBaseMainRequestManagerTests",
