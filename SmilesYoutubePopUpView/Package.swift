@@ -25,10 +25,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "SmilesYoutubePopUpView",
-            dependencies: [
-                .product(name: "YouTubeiOSPlayerHelper", package: "youtube-ios-player-helper"),
-                .product(name: "SmilesUtilities", package: "SmilesUtilities")
-            ],
+            dependencies: ["YouTubeiOSPlayerHelper","SmilesUtilities"],
         path: "Sources"),
         .testTarget(
             name: "SmilesYoutubePopUpViewTests",
