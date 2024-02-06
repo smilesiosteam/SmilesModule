@@ -292,9 +292,11 @@ extension Target {
                                         path: "SmilesPersonalizationEvent/Sources")
     
     static let LottieAnimationManager = target(name: .LottieAnimationManager,
+                                               dependencies: [.Lottie],
                                         path: "LottieAnimationManager/Sources")
     
     static let SmilesYoutubePopUpView = target(name: .SmilesYoutubePopUpView,
+                                               dependencies: [.YoutubePlayer],
                                         path: "SmilesYoutubePopUpView/Sources")
     
     static let AnalyticsSmiles = target(name: .AnalyticsSmiles,
@@ -341,4 +343,5 @@ extension Target.Dependency {
     static let SDWebImage = byName(name: "SDWebImage")
     static let NVActivityIndicatorView = byName(name: "NVActivityIndicatorView")
     static let Alamofire = byName(name: "Alamofire")
+    static let YoutubePlayer = byName(name: "youtube-ios-player-helper")
 }
