@@ -154,5 +154,5 @@ extension Target.Dependency {
     static let SDWebImage = byName(name: "SDWebImage")
     static let NVActivityIndicatorView = byName(name: "NVActivityIndicatorView")
     static let Alamofire = byName(name: "Alamofire")
-    static let Lottie = byName(name: "Lottie")
+    static let Lottie = byName(name: "lottie-ios")
 }
