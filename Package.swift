@@ -24,6 +24,7 @@ let package = Package(
         .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0"),
         .package(url: "https://github.com/ninjaprox/NVActivityIndicatorView.git", from: "5.0.0"),
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.6.4")),
+        .package(url: "https://github.com/airbnb/lottie-ios.git", exact: "3.5.0"),
     ],
     targets: [
         .SmilesMonoRepo,
