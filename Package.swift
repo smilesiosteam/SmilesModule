@@ -292,7 +292,6 @@ extension Target {
                                         path: "SmilesPersonalizationEvent/Sources")
     
     static let LottieAnimationManager = target(name: .LottieAnimationManager,
-                                               dependencies: [.Lottie],
                                         path: "LottieAnimationManager/Sources")
     
     static let SmilesYoutubePopUpView = target(name: .SmilesYoutubePopUpView,
