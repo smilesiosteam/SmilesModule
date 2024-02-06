@@ -337,11 +337,11 @@ extension Target.Dependency {
     static let DeviceAppCheck = byName(name: .DeviceAppCheck)
     static let SmilesOnboarding = byName(name: .SmilesOnboarding)
     
-    static let Lottie = byName(name: "lottie-ios")
+    static let Lottie = product(name: "Lottie", package: "lottie-ios")
     static let CryptoSwift = byName(name: "CryptoSwift")
     static let SkeletonView = byName(name: "SkeletonView")
     static let SDWebImage = byName(name: "SDWebImage")
     static let NVActivityIndicatorView = byName(name: "NVActivityIndicatorView")
     static let Alamofire = byName(name: "Alamofire")
-    static let YoutubePlayer = byName(name: "YouTubeiOSPlayerHelper")
+    static let YoutubePlayer = product(name: "YouTubeiOSPlayerHelper", package: "youtube-ios-player-helper")
 }
