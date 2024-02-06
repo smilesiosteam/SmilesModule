@@ -25,6 +25,8 @@ let package = Package(
             name: "LottieAnimationManager",
             dependencies: [
                 .product(name: "Lottie", package: "lottie-ios")
-            ])
+            ],
+            path: "Sources/LottieAnimationManager"
+        )
     ]
 )

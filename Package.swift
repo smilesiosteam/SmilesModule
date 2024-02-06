@@ -68,13 +68,13 @@ extension Product {
     static let SmilesUtilities = library(name: .SmilesUtilities, targets: [.SmilesUtilities, .Prefixed.SmilesUtilities])
     static let SmilesStorage = library(name: .SmilesStorage, targets: [.SmilesStorage])
     static let SmilesLoader = library(name: .SmilesLoader, targets: [.SmilesLoader])
-    static let SmilesLanguageManager = library(name: .SmilesLanguageManager, targets: [.SmilesLanguageManager, .Prefixed.SmilesLanguageManager])
-    static let SmilesBaseMainRequestManager = library(name: .SmilesBaseMainRequestManager, targets: [.SmilesBaseMainRequestManager, .SmilesBaseMainRequestManager])
-    static let SmilesSharedServices = library(name: .SmilesSharedServices, targets: [.SmilesSharedServices, .SmilesSharedServices])
-    static let NetworkingLayer = library(name: .NetworkingLayer, targets: [.NetworkingLayer, .NetworkingLayer])
-    static let SmilesEmailVerification = library(name: .SmilesEmailVerification, targets: [.SmilesEmailVerification, .SmilesEmailVerification])
+    static let SmilesLanguageManager = library(name: .SmilesLanguageManager, targets: [.SmilesLanguageManager])
+    static let SmilesBaseMainRequestManager = library(name: .SmilesBaseMainRequestManager, targets: [.SmilesBaseMainRequestManager])
+    static let SmilesSharedServices = library(name: .SmilesSharedServices, targets: [.SmilesSharedServices])
+    static let NetworkingLayer = library(name: .NetworkingLayer, targets: [.NetworkingLayer])
+    static let SmilesEmailVerification = library(name: .SmilesEmailVerification, targets: [.SmilesEmailVerification])
     
-    static let LottieAnimationManager = library(name: .LottieAnimationManager, targets: [.LottieAnimationManager, .LottieAnimationManager])
+    static let LottieAnimationManager = library(name: .LottieAnimationManager, targets: [.LottieAnimationManager])
 }
 
 extension Target {
@@ -135,8 +135,7 @@ extension Target {
                                         path: "SmilesEmailVerification/Sources/SmilesEmailVerification/")
     
     static let LottieAnimationManager = target(name: .LottieAnimationManager,
-                                             dependencies: [.Lottie],
-                                        path: "LottieAnimationManager/Sources/LottieAnimationManager/")
+                                        path: "LottieAnimationManager/Sources")
 }
 
 
@@ -154,5 +153,5 @@ extension Target.Dependency {
     static let SDWebImage = byName(name: "SDWebImage")
     static let NVActivityIndicatorView = byName(name: "NVActivityIndicatorView")
     static let Alamofire = byName(name: "Alamofire")
-    static let Lottie = byName(name: "lottie-ios")
+    static let Lottie = byName(name: "Lottie")
 }
