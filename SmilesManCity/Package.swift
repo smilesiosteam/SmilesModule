@@ -30,7 +30,7 @@ let package = Package(
         .package(path: "../SmilesStoriesManager"),
         .package(path: "../SmilesBanners"),
         .package(path: "../SmilesReusableComponents"),
-        .package(path: "../SmilesAppHeader")
+        .package(path: "../AppHeader")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.

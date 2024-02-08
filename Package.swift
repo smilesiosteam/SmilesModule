@@ -412,6 +412,7 @@ extension Target.Dependency {
     static let SmilesTutorials = byName(name: .SmilesTutorials)
     static let SmilesScratchHandler = byName(name: .SmilesScratchHandler)
     static let AppHeader = byName(name: .AppHeader)
+    
     static let SmilesPersonalizationEvent = byName(name: .SmilesPersonalizationEvent)
     static let SmilesYoutubePopUpView = byName(name: .SmilesYoutubePopUpView)
     static let SmilesSubscriptionPromotion = byName(name: .SmilesSubscriptionPromotion)
