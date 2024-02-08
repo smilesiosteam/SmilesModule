@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="OrderConfirmationCollectionViewCell" id="zMg-Jj-eU0" customClass="OrderConfirmationCollectionViewCell" customModule="SmilesOrderTracking">
+            <rect key="frame" x="0.0" y="0.0" width="399" height="197"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="LKj-zy-BrI">
+                <rect key="frame" x="0.0" y="0.0" width="399" height="197"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v03-qh-Bkh">
+                        <rect key="frame" x="0.0" y="0.0" width="399" height="197"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HKB-dc-o1C">
+                                <rect key="frame" x="16" y="16" width="367" height="165"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="396-jJ-RTk">
+                                        <rect key="frame" x="0.0" y="0.0" width="367" height="24"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="order-pending-icon" translatesAutoresizingMaskIntoConstraints="NO" id="F2c-VL-21X">
+                                                <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="24" id="swo-5z-GIU"/>
+                                                    <constraint firstAttribute="height" constant="24" id="x3Q-zf-Fu6"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FAQ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uB8-ap-Tns">
+                                                <rect key="frame" x="32" y="0.0" width="335" height="24"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Have you received your order from Big Smoke Burger?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wKo-jj-fAx">
+                                        <rect key="frame" x="0.0" y="32" width="367" height="77"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="NeL-Fh-wru">
+                                        <rect key="frame" x="0.0" y="117" width="367" height="48"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o6r-y6-i7h">
+                                                <rect key="frame" x="0.0" y="0.0" width="174.66666666666666" height="48"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="zaK-Oo-xPR"/>
+                                                </constraints>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="denyButtonTapped:" destination="zMg-Jj-eU0" eventType="touchUpInside" id="Lcu-OR-GpS"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eKU-kD-KBL">
+                                                <rect key="frame" x="192.66666666666663" y="0.0" width="174.33333333333337" height="48"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="confirmButtonTapped:" destination="zMg-Jj-eU0" eventType="touchUpInside" id="mpC-iY-c0a"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="HKB-dc-o1C" secondAttribute="trailing" constant="16" id="Hoo-OV-WzR"/>
+                            <constraint firstAttribute="bottom" secondItem="HKB-dc-o1C" secondAttribute="bottom" constant="16" id="J2W-q9-F5N"/>
+                            <constraint firstItem="HKB-dc-o1C" firstAttribute="top" secondItem="v03-qh-Bkh" secondAttribute="top" constant="16" id="MdZ-Sy-h0y"/>
+                            <constraint firstItem="HKB-dc-o1C" firstAttribute="leading" secondItem="v03-qh-Bkh" secondAttribute="leading" constant="16" id="eYl-6q-PLv"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="v03-qh-Bkh" secondAttribute="bottom" id="3IS-PB-81n"/>
+                    <constraint firstItem="v03-qh-Bkh" firstAttribute="leading" secondItem="LKj-zy-BrI" secondAttribute="leading" id="aTV-aW-seU"/>
+                    <constraint firstAttribute="trailing" secondItem="v03-qh-Bkh" secondAttribute="trailing" id="cmm-7n-5ub"/>
+                    <constraint firstItem="v03-qh-Bkh" firstAttribute="top" secondItem="LKj-zy-BrI" secondAttribute="top" id="ssV-mO-dpU"/>
+                </constraints>
+            </collectionViewCellContentView>
+            <size key="customSize" width="399" height="197"/>
+            <connections>
+                <outlet property="confirmButton" destination="eKU-kD-KBL" id="Sp9-lP-lu9"/>
+                <outlet property="containerStackView" destination="HKB-dc-o1C" id="d58-8c-Cca"/>
+                <outlet property="containerView" destination="v03-qh-Bkh" id="8TR-7X-lEc"/>
+                <outlet property="denyButton" destination="o6r-y6-i7h" id="nga-ax-EO1"/>
+                <outlet property="questionLabel" destination="wKo-jj-fAx" id="NOA-Gw-RUC"/>
+                <outlet property="titleLabel" destination="uB8-ap-Tns" id="bRU-9o-la4"/>
+                <outlet property="titleStackView" destination="396-jJ-RTk" id="QRL-hC-ei4"/>
+            </connections>
+            <point key="canvasLocation" x="434.35114503816794" y="90.492957746478879"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="order-pending-icon" width="24" height="24"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

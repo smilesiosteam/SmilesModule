@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="GetSupportImageHeaderCollectionViewCell" customModule="SmilesOrderTracking">
+            <rect key="frame" x="0.0" y="0.0" width="520" height="144"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="520" height="144"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FDi-AV-lGx">
+                        <rect key="frame" x="0.0" y="0.0" width="520" height="144"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Delivered" translatesAutoresizingMaskIntoConstraints="NO" id="4Xz-2J-0AY">
+                                <rect key="frame" x="16" y="35" width="104" height="104"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="104" id="5Ba-DQ-jGF"/>
+                                    <constraint firstAttribute="width" secondItem="4Xz-2J-0AY" secondAttribute="height" multiplier="1:1" id="alA-lp-d9w"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="52"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="4Xz-2J-0AY" firstAttribute="leading" secondItem="FDi-AV-lGx" secondAttribute="leading" constant="16" id="7fD-RG-q9w"/>
+                            <constraint firstAttribute="bottom" secondItem="4Xz-2J-0AY" secondAttribute="bottom" constant="5" id="DxS-Ao-Jfm"/>
+                            <constraint firstItem="4Xz-2J-0AY" firstAttribute="top" secondItem="FDi-AV-lGx" secondAttribute="top" constant="35" id="YGS-M7-Ecv"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="FDi-AV-lGx" secondAttribute="trailing" id="2jf-4O-L6W"/>
+                <constraint firstItem="FDi-AV-lGx" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="6Cb-wc-DtA"/>
+                <constraint firstAttribute="bottom" secondItem="FDi-AV-lGx" secondAttribute="bottom" id="HPb-24-sot"/>
+                <constraint firstItem="FDi-AV-lGx" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="dgS-DV-Uag"/>
+            </constraints>
+            <size key="customSize" width="520" height="439"/>
+            <connections>
+                <outlet property="containerView" destination="FDi-AV-lGx" id="7c2-lj-7H8"/>
+                <outlet property="headerImage" destination="4Xz-2J-0AY" id="57j-Op-Gjc"/>
+            </connections>
+            <point key="canvasLocation" x="129.7709923664122" y="135.56338028169014"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="Delivered" width="258" height="209"/>
+    </resources>
+</document>

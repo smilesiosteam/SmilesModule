@@ -39,6 +39,7 @@ let package = Package(
         .SmilesManCity,
         .SmilesFilterAndSort,
         .SmilesExplorer,
+        .SmilesOrderTracking,
     ],
     dependencies: [
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.0")),
@@ -49,7 +50,10 @@ let package = Package(
         .package(url: "https://github.com/airbnb/lottie-ios.git", exact: "3.5.0"),
         .package(url:"https://github.com/youtube/youtube-ios-player-helper.git", from: "1.0.4"),
         .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.0"),
-        .package(url: "https://github.com/wxxsw/SwiftTheme.git", branch: "master")
+        .package(url: "https://github.com/wxxsw/SwiftTheme.git", branch: "master"),
+        .package(url: "https://github.com/YAtechnologies/GoogleMaps-SP.git", .upToNextMinor(from: "7.2.0")),
+        .package(url: "https://github.com/sabarics/PlaceholderUITextView.git", branch: "master"),
+        .package(url: "https://github.com/evgenyneu/Cosmos.git", .upToNextMajor(from: "23.0.0")),
     ],
     targets: [
         .SmilesMonoRepo,
@@ -83,6 +87,7 @@ let package = Package(
         .SmilesManCity,
         .SmilesFilterAndSort,
         .SmilesExplorer,
+        .SmilesOrderTracking,
     ]
 )
 
@@ -119,6 +124,8 @@ extension String {
     static let SmilesManCity = "SmilesManCity"
     static let SmilesFilterAndSort = "SmilesFilterAndSort"
     static let SmilesExplorer = "SmilesExplorer"
+    static let SmilesOrderTracking = "SmilesOrderTracking"
+    static let SmilesTests = "SmilesTests"
 
     enum Prefixed {
         static let SmilesFontsManager = "SmilesFontsManager"
@@ -160,6 +167,8 @@ extension Product {
     static let SmilesManCity = library(name: .SmilesManCity, targets: [.SmilesManCity])
     static let SmilesFilterAndSort = library(name: .SmilesFilterAndSort, targets: [.SmilesFilterAndSort])
     static let SmilesExplorer = library(name: .SmilesExplorer, targets: [.SmilesExplorer])
+    static let SmilesOrderTracking = library(name: .SmilesOrderTracking, targets: [.SmilesOrderTracking])
+    static let SmilesTests = library(name: .SmilesTests, targets: [.SmilesTests])
 }
 
 extension Target {
@@ -380,6 +389,22 @@ extension Target {
                                                dependencies: [.YoutubePlayer, .SmilesUtilities],
                                         path: "SmilesYoutubePopUpView/Sources")
     
+    static let SmilesOrderTracking = target(name: .SmilesOrderTracking,
+                                               dependencies: [.SmilesUtilities,
+                                                              .SmilesFontsManager,
+                                                              .GoogleMaps,
+                                                              .SmilesBaseMainRequestManager,
+                                                              .NetworkingLayer,
+                                                              .LottieAnimationManager,
+                                                              .SmilesLoader,
+                                                              .SDWebImage,
+                                                              .PlaceholderUITextView,
+                                                              .SmilesScratchHandler,
+                                                              .SmilesSharedServices,
+                                                              .SmilesTests,
+                                                              .Cosmos],
+                                        path: "SmilesOrderTracking/Sources")
+    
     static let AnalyticsSmiles = target(name: .AnalyticsSmiles,
                                         path: "AnalyticsSmiles/Sources")
     
@@ -388,6 +413,9 @@ extension Target {
     
     static let DeviceAppCheck = target(name: .DeviceAppCheck,
                                         path: "DeviceAppCheck/Sources")
+    
+    static let SmilesTests = target(name: .SmilesTests,
+                                        path: "SmilesTests/Sources")
 }
 
 
@@ -412,6 +440,8 @@ extension Target.Dependency {
     static let SmilesTutorials = byName(name: .SmilesTutorials)
     static let SmilesScratchHandler = byName(name: .SmilesScratchHandler)
     static let AppHeader = byName(name: .AppHeader)
+    static let SmilesOrderTracking = byName(name: .SmilesOrderTracking)
+    static let SmilesTests = byName(name: .SmilesTests)
     
     static let SmilesPersonalizationEvent = byName(name: .SmilesPersonalizationEvent)
     static let SmilesYoutubePopUpView = byName(name: .SmilesYoutubePopUpView)
@@ -424,6 +454,9 @@ extension Target.Dependency {
     static let SmilesFilterAndSort = byName(name: .SmilesFilterAndSort)
     static let SmilesExplorer = byName(name: .SmilesExplorer)
     
+    static let GoogleMaps =   product(name: "GoogleMaps", package: "GoogleMaps-SP")
+    static let Cosmos =   product(name: "Cosmos", package: "Cosmos")
+    static let PlaceholderUITextView = product(name: "PlaceholderUITextView", package: "PlaceholderUITextView")
     static let Lottie = product(name: "Lottie", package: "lottie-ios")
     static let CryptoSwift = byName(name: "CryptoSwift")
     static let SkeletonView = byName(name: "SkeletonView")
