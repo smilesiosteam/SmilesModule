@@ -43,6 +43,7 @@ let package = Package(
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.6.4")),
         .package(url: "https://github.com/airbnb/lottie-ios.git", exact: "3.5.0"),
         .package(url:"https://github.com/youtube/youtube-ios-player-helper.git", from: "1.0.4"),
+        .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.0"),
     ],
     targets: [
         .SmilesMonoRepo,
@@ -344,4 +345,5 @@ extension Target.Dependency {
     static let NVActivityIndicatorView = byName(name: "NVActivityIndicatorView")
     static let Alamofire = byName(name: "Alamofire")
     static let YoutubePlayer = product(name: "YouTubeiOSPlayerHelper", package: "youtube-ios-player-helper")
+    static let PhoneNumberKit = product(name: "PhoneNumberKit", package: "PhoneNumberKit")
 }
