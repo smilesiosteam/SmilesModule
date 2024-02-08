@@ -34,6 +34,7 @@ let package = Package(
         .SmilesSubscriptionPromotion,
         .DeviceAppCheck,
         .SmilesOnboarding,
+        .SmilesOcassionThemes,
     ],
     dependencies: [
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.0")),
@@ -72,6 +73,7 @@ let package = Package(
         .SmilesSubscriptionPromotion,
         .DeviceAppCheck,
         .SmilesOnboarding,
+        .SmilesOcassionThemes,
     ]
 )
 
@@ -103,6 +105,7 @@ extension String {
     static let SmilesSubscriptionPromotion = "SmilesSubscriptionPromotion"
     static let DeviceAppCheck = "DeviceAppCheck"
     static let SmilesOnboarding = "SmilesOnboarding"
+    static let SmilesOcassionThemes = "SmilesOcassionThemes"
 
     enum Prefixed {
         static let SmilesFontsManager = "SmilesFontsManager"
@@ -139,6 +142,7 @@ extension Product {
     static let SmilesSubscriptionPromotion = library(name: .SmilesSubscriptionPromotion, targets: [.SmilesSubscriptionPromotion])
     static let DeviceAppCheck = library(name: .DeviceAppCheck, targets: [.DeviceAppCheck])
     static let SmilesOnboarding = library(name: .SmilesOnboarding, targets: [.SmilesOnboarding])
+    static let SmilesOcassionThemes = library(name: .SmilesOcassionThemes, targets: [.SmilesOcassionThemes])
 }
 
 extension Target {
@@ -268,6 +272,18 @@ extension Target {
                                                                    .SmilesLoader],
                                         path: "SmilesSubscriptionPromotion/Sources")
     
+    static let SmilesOcassionThemes = target(name: .SmilesOcassionThemes,
+                                                    dependencies: [.SmilesFontsManager,
+                                                                   .SmilesUtilities,
+                                                                   .SmilesSharedServices,
+                                                                   .SmilesLanguageManager,
+                                                                   .SmilesLoader,
+                                                                   .SmilesBaseMainRequestManager,
+                                                                   .SmilesOffers,
+                                                                   .SmilesBanners,
+                                                                   .SmilesStoriesManager],
+                                        path: "SmilesOcassionThemes/Sources")
+    
     static let SmilesOffers = target(name: .SmilesOffers,
                                         dependencies: [.LottieAnimationManager,
                                                        .SmilesUtilities,
@@ -338,6 +354,7 @@ extension Target.Dependency {
     static let SmilesSubscriptionPromotion = byName(name: .SmilesSubscriptionPromotion)
     static let DeviceAppCheck = byName(name: .DeviceAppCheck)
     static let SmilesOnboarding = byName(name: .SmilesOnboarding)
+    static let SmilesOcassionThemes = byName(name: .SmilesOcassionThemes)
     
     static let Lottie = product(name: "Lottie", package: "lottie-ios")
     static let CryptoSwift = byName(name: "CryptoSwift")
