@@ -37,6 +37,8 @@ let package = Package(
         .SmilesOcassionThemes,
         .SmilesReusableComponents,
         .SmilesManCity,
+        .SmilesFilterAndSort,
+        .SmilesExplorer,
     ],
     dependencies: [
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.0")),
@@ -79,6 +81,8 @@ let package = Package(
         .SmilesOcassionThemes,
         .SmilesReusableComponents,
         .SmilesManCity,
+        .SmilesFilterAndSort,
+        .SmilesExplorer,
     ]
 )
 
@@ -113,6 +117,8 @@ extension String {
     static let SmilesOcassionThemes = "SmilesOcassionThemes"
     static let SmilesReusableComponents = "SmilesReusableComponents"
     static let SmilesManCity = "SmilesManCity"
+    static let SmilesFilterAndSort = "SmilesFilterAndSort"
+    static let SmilesExplorer = "SmilesExplorer"
 
     enum Prefixed {
         static let SmilesFontsManager = "SmilesFontsManager"
@@ -152,6 +158,8 @@ extension Product {
     static let SmilesOcassionThemes = library(name: .SmilesOcassionThemes, targets: [.SmilesOcassionThemes])
     static let SmilesReusableComponents = library(name: .SmilesReusableComponents, targets: [.SmilesReusableComponents])
     static let SmilesManCity = library(name: .SmilesManCity, targets: [.SmilesManCity])
+    static let SmilesFilterAndSort = library(name: .SmilesFilterAndSort, targets: [.SmilesFilterAndSort])
+    static let SmilesExplorer = library(name: .SmilesExplorer, targets: [.SmilesExplorer])
 }
 
 extension Target {
@@ -335,6 +343,20 @@ extension Target {
                                                        .NetworkingLayer],
                                         path: "SmilesPersonalizationEvent/Sources")
     
+    static let SmilesExplorer = target(name: .SmilesExplorer,
+                                        dependencies: [.SmilesFontsManager,
+                                                       .SmilesUtilities,
+                                                       .SmilesSharedServices,
+                                                       .SmilesLanguageManager,
+                                                       .SmilesLoader,
+                                                       .SmilesBaseMainRequestManager,
+                                                       .SmilesOffers,
+                                                       .SmilesBanners,
+                                                       .AppHeader,
+                                                       .SmilesFilterAndSort,
+                                                       .SmilesStoriesManager],
+                                        path: "SmilesExplorer/Sources")
+    
     static let SmilesReusableComponents = target(name: .SmilesReusableComponents,
                                         dependencies: [.SmilesUtilities,
                                                        .SmilesFontsManager,
@@ -342,6 +364,13 @@ extension Target {
                                                        .SmilesSharedServices,
                                                        .SwiftTheme],
                                         path: "SmilesReusableComponents/Sources")
+    
+    static let SmilesFilterAndSort = target(name: .SmilesFilterAndSort,
+                                        dependencies: [.SmilesUtilities,
+                                                       .SmilesFontsManager,
+                                                       .NetworkingLayer,
+                                                       .SmilesOffers],
+                                        path: "SmilesFilterAndSort/Sources")
     
     static let LottieAnimationManager = target(name: .LottieAnimationManager,
                                                dependencies: [.Lottie],
@@ -391,6 +420,8 @@ extension Target.Dependency {
     static let SmilesOcassionThemes = byName(name: .SmilesOcassionThemes)
     static let SmilesReusableComponents = byName(name: .SmilesReusableComponents)
     static let SmilesManCity = byName(name: .SmilesManCity)
+    static let SmilesFilterAndSort = byName(name: .SmilesFilterAndSort)
+    static let SmilesExplorer = byName(name: .SmilesExplorer)
     
     static let Lottie = product(name: "Lottie", package: "lottie-ios")
     static let CryptoSwift = byName(name: "CryptoSwift")
