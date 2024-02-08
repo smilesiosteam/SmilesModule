@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ManCityVideoTableViewCell" rowHeight="224" id="xYW-ew-zIa" customClass="ManCityVideoTableViewCell" customModule="SmilesManCity">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="224"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xYW-ew-zIa" id="fp2-ct-pA5">
+                <rect key="frame" x="0.0" y="0.0" width="393" height="224"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vxZ-RM-4dC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="224"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MX3-ox-czH">
+                                <rect key="frame" x="16" y="0.0" width="361" height="224"/>
+                            </imageView>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="udr-RE-DXX">
+                                <rect key="frame" x="164.66666666666666" y="80" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="RFY-Cl-jbh"/>
+                                    <constraint firstAttribute="width" constant="64" id="sEr-XJ-lS7"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="play_button_icon"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="MX3-ox-czH" secondAttribute="bottom" id="Dip-dG-d5E"/>
+                            <constraint firstItem="MX3-ox-czH" firstAttribute="top" secondItem="vxZ-RM-4dC" secondAttribute="top" id="IMF-v2-ciV"/>
+                            <constraint firstAttribute="trailing" secondItem="MX3-ox-czH" secondAttribute="trailing" constant="16" id="O4C-GF-TPs"/>
+                            <constraint firstItem="MX3-ox-czH" firstAttribute="leading" secondItem="vxZ-RM-4dC" secondAttribute="leading" constant="16" id="UMR-3q-YGe"/>
+                            <constraint firstItem="udr-RE-DXX" firstAttribute="centerY" secondItem="vxZ-RM-4dC" secondAttribute="centerY" id="W69-ZY-vm0"/>
+                            <constraint firstItem="udr-RE-DXX" firstAttribute="centerX" secondItem="vxZ-RM-4dC" secondAttribute="centerX" id="r9V-x5-uQQ"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="vxZ-RM-4dC" firstAttribute="leading" secondItem="fp2-ct-pA5" secondAttribute="leading" id="4ve-5n-Umc"/>
+                    <constraint firstAttribute="bottom" secondItem="vxZ-RM-4dC" secondAttribute="bottom" id="Kok-Fa-YtH"/>
+                    <constraint firstAttribute="trailing" secondItem="vxZ-RM-4dC" secondAttribute="trailing" id="e7d-Mh-hYj"/>
+                    <constraint firstItem="vxZ-RM-4dC" firstAttribute="top" secondItem="fp2-ct-pA5" secondAttribute="top" id="jKG-qr-YiB"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="mainView" destination="vxZ-RM-4dC" id="ZpL-fr-yXH"/>
+                <outlet property="playButton" destination="udr-RE-DXX" id="0RT-4u-9Ng"/>
+                <outlet property="thumbnailImageView" destination="MX3-ox-czH" id="XoQ-Xh-Syx"/>
+            </connections>
+            <point key="canvasLocation" x="193.12977099236642" y="207.04225352112678"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="play_button_icon" width="65" height="65.333335876464844"/>
+    </resources>
+</document>

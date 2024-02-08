@@ -64,6 +64,15 @@
       }
     },
     {
+      "identity" : "swifttheme",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wxxsw/SwiftTheme.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "f6a5442da8527f88e5b61b42131c003bd2d56803"
+      }
+    },
+    {
       "identity" : "youtube-ios-player-helper",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/youtube/youtube-ios-player-helper.git",

@@ -35,6 +35,8 @@ let package = Package(
         .DeviceAppCheck,
         .SmilesOnboarding,
         .SmilesOcassionThemes,
+        .SmilesReusableComponents,
+        .SmilesManCity,
     ],
     dependencies: [
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.0")),
@@ -45,6 +47,7 @@ let package = Package(
         .package(url: "https://github.com/airbnb/lottie-ios.git", exact: "3.5.0"),
         .package(url:"https://github.com/youtube/youtube-ios-player-helper.git", from: "1.0.4"),
         .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.0"),
+        .package(url: "https://github.com/wxxsw/SwiftTheme.git", branch: "master")
     ],
     targets: [
         .SmilesMonoRepo,
@@ -74,6 +77,8 @@ let package = Package(
         .DeviceAppCheck,
         .SmilesOnboarding,
         .SmilesOcassionThemes,
+        .SmilesReusableComponents,
+        .SmilesManCity,
     ]
 )
 
@@ -106,6 +111,8 @@ extension String {
     static let DeviceAppCheck = "DeviceAppCheck"
     static let SmilesOnboarding = "SmilesOnboarding"
     static let SmilesOcassionThemes = "SmilesOcassionThemes"
+    static let SmilesReusableComponents = "SmilesReusableComponents"
+    static let SmilesManCity = "SmilesManCity"
 
     enum Prefixed {
         static let SmilesFontsManager = "SmilesFontsManager"
@@ -143,6 +150,8 @@ extension Product {
     static let DeviceAppCheck = library(name: .DeviceAppCheck, targets: [.DeviceAppCheck])
     static let SmilesOnboarding = library(name: .SmilesOnboarding, targets: [.SmilesOnboarding])
     static let SmilesOcassionThemes = library(name: .SmilesOcassionThemes, targets: [.SmilesOcassionThemes])
+    static let SmilesReusableComponents = library(name: .SmilesReusableComponents, targets: [.SmilesReusableComponents])
+    static let SmilesManCity = library(name: .SmilesManCity, targets: [.SmilesManCity])
 }
 
 extension Target {
@@ -272,6 +281,23 @@ extension Target {
                                                                    .SmilesLoader],
                                         path: "SmilesSubscriptionPromotion/Sources")
     
+    static let SmilesManCity = target(name: .SmilesManCity,
+                                                    dependencies: [.YoutubePlayer,
+                                                                   .SmilesFontsManager,
+                                                                   .SmilesUtilities,
+                                                                   .SmilesSharedServices,
+                                                                   .SmilesLocationHandler,
+                                                                   .SmilesLanguageManager,
+                                                                   .SmilesLoader,
+                                                                   .SmilesOffers,
+                                                                   .SmilesBaseMainRequestManager,
+                                                                   .PhoneNumberKit,
+                                                                   .SmilesReusableComponents,
+                                                                   .SmilesStoriesManager,
+                                                                   .SmilesBanners,
+                                                                   .AppHeader],
+                                        path: "SmilesManCity/Sources")
+    
     static let SmilesOcassionThemes = target(name: .SmilesOcassionThemes,
                                                     dependencies: [.SmilesFontsManager,
                                                                    .SmilesUtilities,
@@ -308,6 +334,14 @@ extension Target {
                                         dependencies: [.SmilesUtilities,
                                                        .NetworkingLayer],
                                         path: "SmilesPersonalizationEvent/Sources")
+    
+    static let SmilesReusableComponents = target(name: .SmilesReusableComponents,
+                                        dependencies: [.SmilesUtilities,
+                                                       .SmilesFontsManager,
+                                                       .SmilesLanguageManager,
+                                                       .SmilesSharedServices,
+                                                       .SwiftTheme],
+                                        path: "SmilesReusableComponents/Sources")
     
     static let LottieAnimationManager = target(name: .LottieAnimationManager,
                                                dependencies: [.Lottie],
@@ -355,6 +389,8 @@ extension Target.Dependency {
     static let DeviceAppCheck = byName(name: .DeviceAppCheck)
     static let SmilesOnboarding = byName(name: .SmilesOnboarding)
     static let SmilesOcassionThemes = byName(name: .SmilesOcassionThemes)
+    static let SmilesReusableComponents = byName(name: .SmilesReusableComponents)
+    static let SmilesManCity = byName(name: .SmilesManCity)
     
     static let Lottie = product(name: "Lottie", package: "lottie-ios")
     static let CryptoSwift = byName(name: "CryptoSwift")
@@ -364,4 +400,5 @@ extension Target.Dependency {
     static let Alamofire = byName(name: "Alamofire")
     static let YoutubePlayer = product(name: "YouTubeiOSPlayerHelper", package: "youtube-ios-player-helper")
     static let PhoneNumberKit = product(name: "PhoneNumberKit", package: "PhoneNumberKit")
+    static let SwiftTheme = product(name: "SwiftTheme", package: "SwiftTheme")
 }
