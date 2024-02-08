@@ -39,8 +39,8 @@ let package = Package(
         .SmilesManCity,
         .SmilesFilterAndSort,
         .SmilesExplorer,
-        //.SmilesOrderTracking,
-        //.SmilesTests,
+        .SmilesOrderTracking,
+        .SmilesTests,
     ],
     dependencies: [
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.0")),
@@ -88,8 +88,8 @@ let package = Package(
         .SmilesManCity,
         .SmilesFilterAndSort,
         .SmilesExplorer,
-        //.SmilesOrderTracking,
-        //.SmilesTests,
+        .SmilesOrderTracking,
+        .SmilesTests,
     ]
 )
 
