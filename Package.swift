@@ -170,7 +170,7 @@ extension Target {
     
     static let SmilesBaseMainRequestManager = target(name: .SmilesBaseMainRequestManager,
                                         dependencies: [.SmilesUtilities],
-                                        path: "SmilesBaseMainRequestManager")
+                                        path: "SmilesBaseMainRequestManager/Sources")
     
     static let SmilesSharedServices = target(name: .SmilesSharedServices,
                                              dependencies: [.SmilesBaseMainRequestManager,
