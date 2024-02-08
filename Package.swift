@@ -296,7 +296,7 @@ extension Target {
                                         path: "LottieAnimationManager/Sources")
     
     static let SmilesYoutubePopUpView = target(name: .SmilesYoutubePopUpView,
-                                               dependencies: [.YoutubePlayer],
+                                               dependencies: [.YoutubePlayer, .SmilesUtilities],
                                         path: "SmilesYoutubePopUpView/Sources")
     
     static let AnalyticsSmiles = target(name: .AnalyticsSmiles,
