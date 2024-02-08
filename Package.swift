@@ -234,6 +234,7 @@ extension Target {
                                                        .NetworkingLayer,
                                                        .DeviceAppCheck,
                                                        .SmilesLocationHandler,
+                                                       .PhoneNumberKit,
                                                        .SmilesLoader],
                                         path: "SmilesOnboarding/Sources")
     
