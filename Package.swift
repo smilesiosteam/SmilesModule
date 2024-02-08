@@ -403,7 +403,7 @@ extension Target {
                                                               .PlaceholderUITextView,
                                                               .SmilesScratchHandler,
                                                               .SmilesSharedServices,
-                                                              .SmilesTests,
+                                                              //.SmilesTests,
                                                               .Cosmos],
                                         path: "SmilesOrderTracking/Sources")
     
