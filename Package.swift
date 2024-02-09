@@ -4,7 +4,7 @@
 import PackageDescription
  
 let package = Package(
-    name: "SmilesMonoRepo",
+    name: "SmilesModule",
     platforms: [
         .iOS(.v13)
     ],
@@ -95,7 +95,7 @@ let package = Package(
 
 
 extension String {
-    static let SmilesMonoRepo = "SmilesMonoRepo"
+    static let SmilesMonoRepo = "SmilesModule"
     static let SmilesFontsManager = "SmilesFontsManager"
     static let SmilesUtilities = "SmilesUtilities"
     static let SmilesStorage = "SmilesStorage"
