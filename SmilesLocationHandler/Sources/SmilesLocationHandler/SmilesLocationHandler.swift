@@ -5,321 +5,154 @@ import UIKit
 import SmilesUtilities
 import AnalyticsSmiles
 
-public protocol LocationToolTipViewDelegate: AnyObject {
-    func searchBtnTapped()
-    func detectBtnTapped()
+public enum LocationCheckEntryPoint {
+    case fromVertical
+    case fromFood
+    case fromDashboard
 }
 
 public protocol SmilesLocationHandlerDelegate: AnyObject {
-    func getUserLocationWith(locationName:String, andLocationNickName:String)
-    func showPopupForLocationSetting()
-    func searchBtnTappedOnToolTip()
+    func showUserLocation(locationName:String, andLocationNickName:String)
     func locationUpdatedSuccessfully()
+    func gotUserLocation()
 }
 
 public class SmilesLocationHandler {
     
-    enum Input {
-        case registerUserLocation(location: CLLocation?)
-        case getUserCurrentLocation
-        case getPlaceFromLocation(isUpdated: Bool = false)
-        case updateUserLocation(userInfo: NSDictionary?, request: RegisterLocationRequest)
-    }
-    
-    enum Output {
-        case fetchUserCurrentLocationDidSucceed(response: CLLocation?)
-        case registerUserLocationDidSucceed(response: RegisterLocationResponse , location : CLLocation?)
-        case registerUserLocationDidFail(error: Error)
-        case fetchPlaceFromLocationDidSucceed(response: String, isUpdated: Bool)
-        case fetchPlaceFromLocationDidFail(error: Error, isUpdated: Bool)
-        case updateUserLocationDidSucceed(response: RegisterLocationResponse)
-        case updateUserLocationDidFail(error: Error)
-    }
-    
-    
-    // MARK: -- Variables
+    // MARK: - PROPERTIES -
     private let locationsViewModel = LocationsViewModel()
     private var locationsUseCaseInput :PassthroughSubject<LocationsViewModel.Input, Never> = .init()
-    
-    // MARK: -- Variables
-    private let output: PassthroughSubject<Output, Never> = .init()
     private var cancellables = Set<AnyCancellable>()
-    
     private var userLocation: CLLocation?
-    var locationName = ""
-    var locationNickName = ""
+    private var locationName = ""
+    private var locationNickName = ""
+    private var controllerType : LocationCheckEntryPoint = .fromDashboard
+    private var isFirstLaunch = false
     public var fireEvent: ((String) -> Void)?
-    public var showLocationToolTip: (() -> Void)?
-    public var dismissLocationToolTip: (() -> Void)?
-    
-    public var toolTipForLocationShown: Bool = false
     public weak var smilesLocationHandlerDelegate : SmilesLocationHandlerDelegate?
     
+    // MARK: - INITIALIZERS -
     init() {
         locationsViewModel.fireEvent = fireEvent
     }
     
-    public convenience init(controller:UIViewController?, isFirstLaunch: Bool = false){
+    public convenience init(delegate: SmilesLocationHandlerDelegate?, isFirstLaunch: Bool = false, controllerType: LocationCheckEntryPoint = .fromDashboard){
         self.init()
-        
-        
-        LocationManager.shared.delegate = self
+        self.controllerType = controllerType
+        self.isFirstLaunch = isFirstLaunch
+        self.smilesLocationHandlerDelegate = delegate
         self.bind(to: self.locationsViewModel)
+        LocationManager.shared.delegate = self
+        LocationManager.shared.startUpdatingLocation()
+    }
+    
+    // MARK: - METHODS -
+    private func updateUserLocationRequest(_ location: CLLocation) {
+        self.locationsUseCaseInput.send(.updateUserLocation(location: location, withUserInfo: false))
+    }
+    
+    private func setupSetLocationString() {
         
-        if let location = LocationStateSaver.getLocationInfo(), !(location.locationId?.isEmpty ?? true){
-            if !AppCommonMethods.isGuestUser {
-                getSavedLocation(isFirstLaunch: isFirstLaunch)
-            } else {
-                getLocation()
-            }
-        }else{
-            getLocation()
+        locationName = ""
+        locationNickName = "SetLocationKey".localizedString
+        self.smilesLocationHandlerDelegate?.showUserLocation(locationName: locationName, andLocationNickName: locationNickName)
+        
+    }
+    
+    
+    private func updateUserLocationForVertical(_ locationLat:String, locationLong:String, isUpdated: Bool) {
+        
+        if isUpdated, let lat = Double(locationLat), let long = Double(locationLong) {
+            updateUserLocationRequest(CLLocation(latitude: lat, longitude: long))
         }
         
     }
     
-}
-
-//MARK: LocationToolTipViewDelegate
-extension SmilesLocationHandler: LocationToolTipViewDelegate{
-    public func detectBtnTapped() {
-        self.hideToolTip()
-        LocationManager.shared.getLocation { location, _ in
-            if let currentLocation = location {
-                self.updateUserLocation(currentLocation, isUpdated: true)
-            } else {
-                self.smilesLocationHandlerDelegate?.showPopupForLocationSetting()
-            }
-        }
-    }
-    
-    public func searchBtnTapped() {
-        self.hideToolTip()
-        self.smilesLocationHandlerDelegate?.searchBtnTappedOnToolTip()
-    }
-}
-
-
-
-//MARK: Functions
-extension SmilesLocationHandler{
-    func getLocation(){
-        self.getUserCurrentLocation()
-    }
-    
-    func updateUserLocationRequest(_ request: RegisterLocationRequest) {
-        self.locationsUseCaseInput.send(.updateUserLocation(userInfo: nil,request: request))
-    }
-    
-    func displayLocationName(_ locationName: String) {
-        self.smilesLocationHandlerDelegate?.getUserLocationWith(locationName: locationName, andLocationNickName: locationNickName)
-    }
-    
-    
-    public func locationUpdatedManually(_ notification: Notification) {
-        if let userInfo = notification.userInfo as NSDictionary? {
-            self.locationsUseCaseInput.send(.updateUserLocation(userInfo: userInfo,request: nil))
-        }
-    }
-    
-    func updateUserLocation(_ location: CLLocation?, isUpdated: Bool) {
-        
-        if let userLocation = location {
-            self.userLocation = userLocation
-            self.locationsUseCaseInput.send(.getPlaceFromLocation(isUpdated: true))
-            
-            if isUpdated {
-                let userLocationInfo = RegisterLocationRequest()
-                if let userInfo = LocationStateSaver.getLocationInfo() {
-                    userLocationInfo.userInfo = userInfo
-                }
-                userLocationInfo.userInfo?.latitude = String(userLocation.coordinate.latitude)
-                userLocationInfo.userInfo?.longitude = String(userLocation.coordinate.longitude)
-                
-                userLocationInfo.userInfo?.locationId = nil
-                userLocationInfo.userInfo?.location = nil
-                userLocationInfo.userInfo?.isLocationUpdated = nil
-                userLocationInfo.userInfo?.mambaId = nil
-                userLocationInfo.userInfo?.cityId = nil
-                userLocationInfo.userInfo?.nickName = nil
-                
-                updateUserLocationRequest(userLocationInfo)
-            }
-        } else {
-            locationName = ""
-            locationNickName = "SetLocationKey".localizedString
-            self.smilesLocationHandlerDelegate?.getUserLocationWith(locationName: locationName, andLocationNickName: locationNickName)
-        }
-    }
-    
-    func updatedLocationToBeSaved(isUpdated:Bool ,_ userLocation: CLLocation){
-        
-        if isUpdated {
-            let userLocationInfo = RegisterLocationRequest()
-            if let userInfo = LocationStateSaver.getLocationInfo() {
-                userLocationInfo.userInfo = userInfo
-            }
-            userLocationInfo.userInfo?.latitude = String(userLocation.coordinate.latitude)
-            userLocationInfo.userInfo?.longitude = String(userLocation.coordinate.longitude)
-            
-            self.updateUserLocationRequest(userLocationInfo)
-        }else{
-            
-            self.smilesLocationHandlerDelegate?.getUserLocationWith(locationName: LocationStateSaver.getLocationInfo()?.location ?? "", andLocationNickName: locationNickName)
-        }
-    }
-    
-    fileprivate func updatePreviousSavedLocation() {
-        if let savedLocation = LocationStateSaver.getLocationInfo() {
-            let latitude = Double(savedLocation.latitude.asStringOrEmpty()).asDoubleOrEmpty()
-            let longitude = Double(savedLocation.longitude.asStringOrEmpty()).asDoubleOrEmpty()
-            self.userLocation = CLLocation(latitude: latitude, longitude: longitude)
-            
-            self.updateUserLocation(self.userLocation, isUpdated: false)
-        }
-    }
-    
-    func getSavedLocation(isFirstLaunch: Bool = false) {
-        if isFirstLaunch {
-            LocationManager.shared.getLocation { [weak self] location, _ in
-                if let _ = location {
-                    self?.fireEvent?("location_enabled")
-                    self?.updateUserLocation(location, isUpdated: true)
-                }
-                else {
-                    self?.fireEvent?("location_disabled")
-                    self?.updatePreviousSavedLocation()
-                }
-            }
-        } else {
-            updatePreviousSavedLocation()
-        }
-    }
-    
-    func registerUserLocationSuccess(response: RegisterLocationResponse , location:CLLocation?){
-        if let userInfo = response.userInfo {
-            fireEvent?("location_registered_success")
-            LocationStateSaver.saveLocationInfo(userInfo)
-            
-            // Get CLLocation from lat & long from userInfo response
-            if let locationId = userInfo.locationId, !locationId.isEmpty, locationId != "0" {
-                
-                let latitude = Double(userInfo.latitude.asStringOrEmpty()).asDoubleOrEmpty()
-                let longitude = Double(userInfo.longitude.asStringOrEmpty()).asDoubleOrEmpty()
-                let userLocation = CLLocation(latitude: latitude, longitude: longitude)
-                
-                if !AppCommonMethods.isGuestUser {
-                    if let shouldUpdate = userInfo.isLocationUpdated, !shouldUpdate {
-                        self.updateUserLocation(userLocation, isUpdated: false)
-                    }
-                    else {
-                        self.updateUserLocation(CLLocation(latitude: location?.coordinate.latitude ?? 0.0, longitude: location?.coordinate.longitude ?? 0.0), isUpdated: true)
-                    }
-                } else {
-                    if let lat = location?.coordinate.latitude, let lon = location?.coordinate.longitude {
-                        self.updateUserLocation(CLLocation(latitude: lat, longitude: lon), isUpdated: true)
-                    } else {
-                        self.updateUserLocation(CLLocation(latitude: 25.194985, longitude: 55.278414), isUpdated: true)
-                    }
-                    
-                }
+    private func getUserCurrentLocation() {
+        LocationManager.shared.getLocation { [weak self] location, _ in
+            if let _ = location {
+                self?.fireEvent?(Constants.AnalyticsEvent.locationEnabled)
             }
             else {
-                self.updateUserLocation(nil, isUpdated: false)
+                self?.fireEvent?(Constants.AnalyticsEvent.locationDisabled)
             }
-        } else {
-            self.updateUserLocation(nil, isUpdated: false)
-        }
-        
-        if let responseMsg = response.responseMsg, !responseMsg.isEmpty {
-            fireEvent?("location_registered_fail")
+            self?.locationsUseCaseInput.send(.getUserLocation(location: location))
         }
     }
     
-    func registerUserLocationFail(){
-        fireEvent?("location_registered_fail")
-        self.updateUserLocation(nil, isUpdated: false)
+    public static func isLocationUpdated(previousLocationId: String?) -> Bool {
+        guard let previousLocationId, let currentLocationId = LocationStateSaver.getLocationInfo()?.locationId else { return false}
+        return previousLocationId != currentLocationId
     }
     
-    func updateUserLocationSucceeded(response : RegisterLocationResponse) {
-        
-        fireEvent?("location_updated_success")
-        LocationStateSaver.saveLocationInfo(response.userInfo)
-        
-        GlobalUserLocation.shared.latitude = response.userInfo?.latitude
-        GlobalUserLocation.shared.longitude = response.userInfo?.longitude
-        GlobalUserLocation.shared.locationId = response.userInfo?.locationId
-        
-        //        locationName = LocationStateSaver.getLocationInfo()?.location ?? ""
-        //        locationNickName = response.userInfo?.nickName ?? locationNickName
-        //
-        //
-        //        self.smilesLocationHandlerDelegate?.getUserLocationWith(locationName: locationName, andLocationNickName: locationNickName)
-        
-        self.locationsUseCaseInput.send(.getPlaceFromLocation(isUpdated: true))
-        
-        
-        if let _ = response.userInfo {
-            fireEvent?("location_updated_success")
-            self.smilesLocationHandlerDelegate?.locationUpdatedSuccessfully()
-            
-        }
-    }
-    
-    
-    func showToolTip() {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
-            if !(self.toolTipForLocationShown) {
-                self.showLocationToolTip?()
-                self.toolTipForLocationShown = true
-            }
-        }
-    }
-    
-    func hideToolTip() {
-        UIView.animate(withDuration: 0.2) {
-            self.dismissLocationToolTip?()
-            self.toolTipForLocationShown = false
-        }
-    }
 }
 
-
-//MARK:LocationUpdateProtocol
+// MARK: - LOCATION UPDATE DELEGATE -
 extension SmilesLocationHandler: LocationUpdateProtocol {
+    
+    public func locationIsAllowedByUser(isAllowed: Bool) {
+        
+        debugPrint("locationIsAllowedByUser \(isAllowed)")
+        LocationManager.shared.destroyLocationManager()
+        switch self.controllerType{
+        case .fromFood:
+            handleFoodMambaCalls()
+        default:
+            if controllerType == .fromDashboard && isFirstLaunch {
+                setupLocation()
+                if isAllowed {
+                    getUserCurrentLocation()
+                } else {
+                    self.locationsUseCaseInput.send(.getUserLocation(location: nil))
+                }
+            } else {
+                setupLocation()
+            }
+        }
+        
+    }
+    
     public func locationDidUpdateToLocation(location: CLLocation?, placemark: CLPlacemark?) {
         userLocation = location
         if let placemark = placemark {
             self.displayLocationName((placemark.name ?? "") + ", " + (placemark.country ?? ""))
         }
-        showToolTip()
-        
-    }
-}
-
-
-extension SmilesLocationHandler{
-    func getUserCurrentLocation() {
-        LocationManager.shared.getLocation { [weak self] location, _ in
-            if let _ = location {
-                self?.fireEvent?("location_enabled")
-            }
-            else {
-                self?.fireEvent?("location_disabled")
-            }
-            self?.fetchUserCurrentLocationDidSucceed(location: location)
-        }
     }
     
-    func fetchUserCurrentLocationDidSucceed(location: CLLocation?){
-        self.locationsUseCaseInput.send(.registerUserLocation(location: location))
+    private func setupLocation() {
+        
+        if let location = LocationStateSaver.getLocationInfo(),let loc = location.location, !loc.isEmpty{
+            locationName = loc
+            locationNickName = location.nickName ?? "Current Location".localizedString
+            self.smilesLocationHandlerDelegate?.showUserLocation(locationName: locationName, andLocationNickName: locationNickName)
+        } else {
+            setupSetLocationString()
+        }
+        
     }
+    
+    private func handleFoodMambaCalls() {
+        
+        if let location = LocationStateSaver.getLocationInfo() {
+            if let _ = location.locationId {
+                debugPrint("call update service for mamba")
+                if isFirstLaunch {
+                    updateUserLocationForVertical(location.latitude ?? "0", locationLong: location.longitude ?? "0", isUpdated: true)
+                } else {
+                    setupLocation()
+                }
+            } else {
+                guard let latitudeString = location.latitude, let latitude = Double(latitudeString),
+                      let longitudeString = location.longitude, let longitude = Double(longitudeString) else { return }
+                self.locationsUseCaseInput.send(.registerUserLocation(location: CLLocation(latitude: latitude, longitude: longitude)))
+            }
+        }
+        
+    }
+    
 }
 
-
-
-
-//MARK: -- Binding
+// MARK: - VIEWMODEL BINDING -
 extension SmilesLocationHandler{
     func bind(to locationsViewModel: LocationsViewModel) {
         locationsUseCaseInput = PassthroughSubject<LocationsViewModel.Input, Never>()
@@ -327,7 +160,7 @@ extension SmilesLocationHandler{
         output
             .sink { [weak self] event in
                 switch event {
-                case .fetchPlaceFromLocationDidSucceed(response: let place, isUpdated: _):
+                case .fetchPlaceFromLocationDidSucceed(response: let place):
                     print(place)
                     self?.locationName = place
                     if let nickname = LocationStateSaver.getLocationInfo()?.nickName{
@@ -335,8 +168,8 @@ extension SmilesLocationHandler{
                     }
                     self?.displayLocationName(place)
                     
-                case .fetchPlaceFromLocationDidFail(error: let error,isUpdated: _):
-                    print(error.localizedDescription)
+                case .fetchPlaceFromLocationDidFail(error: let error):
+                    print(error?.localizedDescription ?? "")
                     
                 case .updateUserLocationDidSucceed(response: let response):
                     self?.updateUserLocationSucceeded(response: response)
@@ -344,13 +177,84 @@ extension SmilesLocationHandler{
                 case .updateUserLocationDidFail(error: let error):
                     print(error.localizedDescription)
                     
-                case .registerUserLocationDidSucceed(response: let response, location: let location):
-                    self?.registerUserLocationSuccess(response: response, location: location)
+                case .registerUserLocationDidSucceed(response: let response, _):
+                    self?.registerUserLocationSuccess(response: response)
                     
                 case .registerUserLocationDidFail(error: let error):
                     debugPrint(error.localizedDescription)
                     self?.registerUserLocationFail()
+                    
+                case .getUserLocationDidSucceed(response:  let response,location: let location):
+                    self?.getUserLocationDidSucceed(response: response,location: location)
+                    
+                case .getUserLocationDidFail(error: let error):
+                    debugPrint(error.localizedDescription)
+                    self?.getUserLocationFail()
+                    
                 }
             }.store(in: &cancellables)
     }
+}
+
+// MARK: - API RESPONSE HANDLING -
+extension SmilesLocationHandler {
+    
+    private func displayLocationName(_ locationName: String) {
+        self.smilesLocationHandlerDelegate?.showUserLocation(locationName: locationName, andLocationNickName: locationNickName)
+    }
+    
+    private func updateUserLocationSucceeded(response : RegisterLocationResponse) {
+        
+        if let userInfo = response.userInfo {
+            fireEvent?(Constants.AnalyticsEvent.locationUpdated)
+            
+            let savedLocationID = LocationStateSaver.getLocationInfo()?.locationId ?? ""
+          
+            LocationStateSaver.saveLocationInfo(response.userInfo, isFromMamba: true)
+            setupLocation()
+            if savedLocationID != userInfo.locationId {
+                self.smilesLocationHandlerDelegate?.locationUpdatedSuccessfully()
+            }
+        }
+        
+    }
+    
+    private func registerUserLocationSuccess(response: RegisterLocationResponse){
+        
+        if let userInfo = response.userInfo {
+            fireEvent?(Constants.AnalyticsEvent.locationRegistered)
+            LocationStateSaver.saveLocationInfo(userInfo, isFromMamba: true)
+            setupLocation()
+            self.smilesLocationHandlerDelegate?.locationUpdatedSuccessfully()
+        }
+        
+    }
+    
+    private func registerUserLocationFail() {
+        fireEvent?(Constants.AnalyticsEvent.locationRegistrationFailed)
+        setupSetLocationString()
+    }
+    
+    private func getUserLocationDidSucceed(response: RegisterLocationResponse, location: CLLocation?) {
+        
+        if let userInfo = response.userInfo {
+            LocationStateSaver.saveLocationInfo(userInfo, isFromMamba: false)
+            handleFoodMambaCalls()
+            setupLocation()
+            self.smilesLocationHandlerDelegate?.gotUserLocation()
+        }
+        
+        if let responseMsg = response.responseMsg, !responseMsg.isEmpty {
+            /// Remove userInfo object if it is saved previously but there is no address returned from BE (AddressBook is empty and user picked location manually without adding an address)
+            LocationStateSaver.removeLocation()
+            self.smilesLocationHandlerDelegate?.gotUserLocation()
+            setupSetLocationString()
+        }
+        
+    }
+    
+    private func getUserLocationFail() {
+        setupSetLocationString()
+    }
+    
 }

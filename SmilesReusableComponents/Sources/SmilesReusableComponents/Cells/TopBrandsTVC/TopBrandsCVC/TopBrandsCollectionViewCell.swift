@@ -28,9 +28,9 @@ class TopBrandsCollectionViewCell: UICollectionViewCell {
     }
 
     func configureCell(with data: BrandDO) {
-        image.setImageWithUrlString(data.iconUrl.asStringOrEmpty()) { image in
+        image.setImageWithUrlString(data.iconUrl.asStringOrEmpty()) { [weak self] image in
             if let image = image {
-                self.image.image = image
+                self?.image.image = image
             }
         }
         

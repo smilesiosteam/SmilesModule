@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-public protocol Requestable {
+public protocol Requestable: AnyObject {
     var requestTimeOut: Float { get }
     func request<T: Codable>(_ req: NetworkRequest) -> AnyPublisher<T, NetworkError>
 }

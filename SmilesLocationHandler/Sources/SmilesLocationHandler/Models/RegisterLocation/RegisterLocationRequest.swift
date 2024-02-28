@@ -1,17 +1,19 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Abdul Rehman Amjad on 30/05/2023.
 //
 
 import UIKit
 import SmilesUtilities
+import SmilesBaseMainRequestManager
 
-public class RegisterLocationRequest: Codable {
-    public var userInfo: AppUserInfo?
-    public var menuItemType: String?
-    public var isGuestUser: Bool?
+public class RegisterLocationRequest: SmilesBaseMainRequest {
+    
+    public var locationInfo: AppUserInfo? = nil
+    public var menuItemType: String? = nil
+    public var isGuestUser: Bool? = nil
 
     enum CodingKeys: String, CodingKey {
         case userInfo
@@ -19,13 +21,24 @@ public class RegisterLocationRequest: Codable {
         case isGuestUser
     }
     
-    public init() {}
+
+   public init(locationInfo: AppUserInfo? = nil, menuItemType: String? = nil, isGuestUser: Bool = false) {
+        super.init()
+        self.locationInfo = locationInfo
+        self.menuItemType = menuItemType
+        self.isGuestUser = isGuestUser
+    }
     
-    public required init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        userInfo = try values.decodeIfPresent(AppUserInfo.self, forKey: .userInfo)
-        menuItemType = try values.decodeIfPresent(String.self, forKey: .menuItemType)
-        isGuestUser = try values.decodeIfPresent(Bool.self, forKey: .isGuestUser)
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+    
+    override public func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(self.menuItemType, forKey: .menuItemType)
+        try container.encodeIfPresent(self.isGuestUser, forKey: .isGuestUser)
+        try container.encode(self.locationInfo, forKey: .userInfo)
     }
     
     public func asDictionary(dictionary: [String: Any]) -> [String: Any] {
@@ -35,4 +48,5 @@ public class RegisterLocationRequest: Codable {
         }
         return encoded.mergeDictionaries(dictionary: dictionary)
     }
+    
 }

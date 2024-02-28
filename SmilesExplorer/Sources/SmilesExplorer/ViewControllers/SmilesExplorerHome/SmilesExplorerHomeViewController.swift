@@ -17,54 +17,44 @@ import SmilesLoader
 public class SmilesExplorerHomeViewController: UIViewController {
     
     // MARK: - OUTLETS -
-    @IBOutlet weak var topHeaderView: AppHeaderView!
     @IBOutlet weak var contentTableView: UITableView!
     
     // MARK: - PROPERTIES -
     var dataSource: SectionedTableViewDataSource?
-    private var  input: PassthroughSubject<SmilesExplorerHomeViewModel.Input, Never> = .init()
     private var cancellables = Set<AnyCancellable>()
-    private lazy var viewModel: SmilesExplorerHomeViewModel = {
-        return SmilesExplorerHomeViewModel()
-    }()
-    private let categoryId: Int
-    private let isGuestUser: Bool
-    private var isUserSubscribed: Bool?
-    private var subscriptionType: ExplorerPackage?
-    private var voucherCode: String?
     var smilesExplorerSections: GetSectionsResponseModel?
     var sections = [SmilesExplorerSectionData]()
     
-    public var delegate:SmilesExplorerHomeDelegate? = nil
-    var offersListing: OffersCategoryResponseModel?
+    private var viewModel: SmilesTouristHomeViewModel!
+    public var delegate: SmilesExplorerHomeDelegate? = nil
+    var ticketsResponse: OffersCategoryResponseModel?
+    var exclusiveDealsResponse: OffersCategoryResponseModel?
+    var bogoOffersResponse: OffersCategoryResponseModel?
     var offersPage = 1 // For offers list pagination
     var dodOffersPage = 1 // For DOD offers list pagination
     var offers = [OfferDO]()
     var tickets = [OfferDO]()
     var bogoOffer = [OfferDO]()
-    var dodOffers = [OfferDO]()
     private var selectedIndexPath: IndexPath?
-    
     var categoryDetailsSections: GetSectionsResponseModel?
-    
     var mutatingSectionDetails = [SectionDetailDO]()
-    
-    // MARK: - ACTIONS -
-    
     
     // MARK: - METHODS -
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        viewModel.getSections()
     }
     
-    public init(categoryId: Int, isGuestUser: Bool, isUserSubscribed: Bool? = nil, subscriptionType: ExplorerPackage? = nil, voucherCode: String? = nil) {
-        self.categoryId = categoryId
-        self.isGuestUser = isGuestUser
-        self.isUserSubscribed = isUserSubscribed
-        self.subscriptionType = subscriptionType
-        self.voucherCode = voucherCode
-        super.init(nibName: "SmilesExplorerHomeViewController", bundle: Bundle.module)
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setUpNavigationBar()
+    }
+    
+     init(viewModel:SmilesTouristHomeViewModel,delegate:SmilesExplorerHomeDelegate) {
+        self.viewModel = viewModel
+        self.delegate = delegate
+        super.init(nibName: "SmilesExplorerHomeViewController", bundle: .module)
     }
     
     required init?(coder: NSCoder) {
@@ -72,37 +62,20 @@ public class SmilesExplorerHomeViewController: UIViewController {
     }
     
     private func setupViews() {
-        
         setupTableView()
         bind(to: viewModel)
-        setupHeaderView(headerTitle: nil)
-        //        if let isUserSubscribed {
-        getSections(isSubscribed: false)
-        //        } else {
-        //            self.input.send(.getRewardPoints)
-        //        }
-        
     }
     
     private func setupTableView() {
         
-        contentTableView.sectionFooterHeight = .leastNormalMagnitude
-        if #available(iOS 15.0, *) {
-            contentTableView.sectionHeaderTopPadding = CGFloat(0)
-        }
-        contentTableView.sectionHeaderHeight = UITableView.automaticDimension
-        contentTableView.estimatedSectionHeaderHeight = 1
+        contentTableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: contentTableView.bounds.size.width, height: CGFloat.leastNormalMagnitude))
+        contentTableView.sectionHeaderHeight = 0.0
+        contentTableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: contentTableView.bounds.size.width, height: CGFloat.leastNormalMagnitude))
+        contentTableView.sectionFooterHeight = 0.0
         contentTableView.delegate = self
         let smilesExplorerCellRegistrable: CellRegisterable = SmilesExplorerHomeCellRegistration()
         smilesExplorerCellRegistrable.register(for: contentTableView)
         
-    }
-    
-    private func setupHeaderView(headerTitle: String?) {
-        topHeaderView.delegate = self
-        topHeaderView.setupHeaderView(backgroundColor: .white, searchBarColor: .white, pointsViewColor: nil, titleColor: .black, headerTitle: headerTitle.asStringOrEmpty(), showHeaderNavigaton: true, haveSearchBorder: true, shouldShowBag: false, isGuestUser: isGuestUser, showHeaderContent: isUserSubscribed ?? false, toolTipInfo: nil)
-        let imageName = "back_arrow"
-        self.topHeaderView.setCustomImageForBackButton(imageName: imageName)
     }
     
     fileprivate func configureDataSource() {
@@ -115,16 +88,9 @@ public class SmilesExplorerHomeViewController: UIViewController {
     private func configureSectionsData(with sectionsResponse: GetSectionsResponseModel) {
         
         smilesExplorerSections = sectionsResponse
+        setUpNavigationBar()
         if let sectionDetailsArray = sectionsResponse.sectionDetails, !sectionDetailsArray.isEmpty {
             self.dataSource = SectionedTableViewDataSource(dataSources: Array(repeating: [], count: sectionDetailsArray.count))
-        }
-        if let topPlaceholderSection = sectionsResponse.sectionDetails?.first(where: { $0.sectionIdentifier == SmilesExplorerSectionIdentifier.topPlaceholder.rawValue }) {
-            setupHeaderView(headerTitle: topPlaceholderSection.title)
-            if let iconURL = topPlaceholderSection.iconUrl {
-                self.topHeaderView.headerTitleImageView.isHidden = false
-                self.topHeaderView.setHeaderTitleIcon(iconURL: iconURL)
-            }
-            
         }
         homeAPICalls()
         
@@ -145,71 +111,100 @@ public class SmilesExplorerHomeViewController: UIViewController {
         
     }
     
+    private func setUpNavigationBar() {
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = UIColor(hex: "ECEDF5")
+        appearance.shadowColor = .clear
+        appearance.shadowImage = UIImage()
+        self.navigationItem.standardAppearance = appearance
+        self.navigationItem.scrollEdgeAppearance = appearance
+        
+        guard let headerData = smilesExplorerSections?.sectionDetails?.first(where: { $0.sectionIdentifier == SmilesExplorerSectionIdentifier.topPlaceholder.rawValue }) else { return }
+        let imageView = UIImageView()
+        NSLayoutConstraint.activate([
+            imageView.heightAnchor.constraint(equalToConstant: 24),
+            imageView.widthAnchor.constraint(equalToConstant: 24)
+        ])
+        imageView.tintColor = .black
+        imageView.sd_setImage(with: URL(string: headerData.iconUrl ?? "")) { image, _, _, _ in
+            imageView.image = image?.withRenderingMode(.alwaysTemplate)
+        }
+
+        let locationNavBarTitle = UILabel()
+        locationNavBarTitle.text = headerData.title
+        locationNavBarTitle.textColor = .black
+        locationNavBarTitle.fontTextStyle = .smilesHeadline4
+        let hStack = UIStackView(arrangedSubviews: [imageView, locationNavBarTitle])
+        hStack.spacing = 4
+        hStack.alignment = .center
+        self.navigationItem.titleView = hStack
+        
+        let btnBack: UIButton = UIButton(type: .custom)
+        btnBack.backgroundColor = .white
+        btnBack.setImage(UIImage(named: AppCommonMethods.languageIsArabic() ? "back_icon_ar" : "back_icon", in: .module, with: nil), for: .normal)
+        btnBack.addTarget(self, action: #selector(self.onClickBack), for: .touchUpInside)
+        btnBack.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+        btnBack.layer.cornerRadius = btnBack.frame.height / 2
+        btnBack.clipsToBounds = true
+        btnBack.tintColor = .black
+        let barButton = UIBarButtonItem(customView: btnBack)
+        self.navigationItem.leftBarButtonItem = barButton
+        self.navigationController?.navigationBar.backgroundColor = .clear
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+    }
+    
+    @objc func onClickBack() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
 }
 
 // MARK: - VIEWMODEL BINDING -
 extension SmilesExplorerHomeViewController {
     
-    func bind(to viewModel: SmilesExplorerHomeViewModel) {
-        input = PassthroughSubject<SmilesExplorerHomeViewModel.Input, Never>()
-        let output = viewModel.transform(input: input.eraseToAnyPublisher())
+    func bind(to viewModel: SmilesTouristHomeViewModel) {
+        let output = viewModel.output
         output
             .sink { [weak self] event in
                 switch event {
+                    
                 case .fetchSectionsDidSucceed(let sectionsResponse):
                     self?.configureSectionsData(with: sectionsResponse)
-                    
                 case .fetchSectionsDidFail(error: let error):
                     debugPrint(error.localizedDescription)
                     self?.configureHideSection(for: .footer, dataSource: SectionDetailDO.self)
-//                    self?.configureHideSection(for: .header, dataSource: SectionDetailDO.self)
-                case .fetchRewardPointsDidSucceed(response: let response, _):
-                    self?.isUserSubscribed = response.explorerSubscriptionStatus
-                    self?.getSections(isSubscribed: response.explorerSubscriptionStatus ?? false)
-                    self?.subscriptionType = response.explorerPackageType
-                    self?.voucherCode = response.explorerVoucherCode
+                    self?.configureHideSection(for: .header, dataSource: SectionDetailDO.self)
                     
+                case .fetchRewardPointsDidSucceed(response: let response, _):
+                    self?.viewModel.isUserSubscribed = response.explorerSubscriptionStatus
+                    self?.viewModel.subscriptionType = response.explorerPackageType
+                    self?.viewModel.voucherCode = response.explorerVoucherCode
                 case .fetchRewardPointsDidFail(error: let error):
                     debugPrint(error.localizedDescription)
                     SmilesLoader.dismiss(from: self?.view ?? UIView())
-                    
-                case .fetchFiltersDataSuccess(_, _):
-//                    self?.filtersData = filters
-//                    self?.selectedSortingTableViewCellModel = selectedSortingTableViewCellModel
-                    break
-                case .fetchAllSavedFiltersSuccess(_, _):
-//                    self?.savedFilters = filtersList
-//                    self?.filtersSavedList = savedFilters
-//                    self?.offers.removeAll()
-//                    self?.configureDataSource()
-//                    self?.configureFiltersData()
-                    break
-                case .fetchTicketsDidSucceed(let exclusiveOffers):
-                    self?.configureTickets(with: exclusiveOffers)
-                    break
+                 
+                case .fetchTicketsDidSucceed(let offers):
+                    self?.configureOffers(with: offers, section: .tickets)
                 case .fetchTicketDidFail(_):
                     self?.configureHideSection(for: .tickets, dataSource: OffersCategoryResponseModel.self)
-                    break
-                case .fetchSavedFiltersAfterSuccess(_):
-//                    self?.filtersSavedList = filtersSavedList
-                    break
-                case .fetchExclusiveOffersDidSucceed(let exclusiveOffers):
-                    self?.configureExclusiveOffers(with: exclusiveOffers)
-                    break
                     
+                case .fetchExclusiveOffersDidSucceed(let offers):
+                    self?.configureOffers(with: offers, section: .exclusiveDeals)
                 case .fetchExclusiveOffersDidFail( _):
                     self?.configureHideSection(for: .exclusiveDeals, dataSource: OffersCategoryResponseModel.self)
-                    break
                     
-                case .fetchBogoDidSucceed(let exclusiveOffers):
-                    self?.configureBogoOffers(with: exclusiveOffers)
-                case .fetchBogoDidFail(_):
+                case .fetchBogoOffersDidSucceed(let offers):
+                    self?.configureOffers(with: offers, section: .bogoOffers)
+                case .fetchBogoOffersDidFail(_):
                     self?.configureHideSection(for: .bogoOffers, dataSource: OffersCategoryResponseModel.self)
-                case .fetchContentForSortingItems(_):
-                    //                    self?.sortingListRowModels = baseRowModels
-                    break
-                case .fetchTopOffersDidSucceed(response: _):
-                    break
+
+                case .fetchSubscriptionBannerDetailsDidSucceed(let response):
+                    self?.configureFooterSection(with: response)
+                case .fetchSubscriptionBannerDetailsDidFail(_):
+                    self?.configureHideSection(for: .footer, dataSource: SectionDetailDO.self)
                     
                 default: break
                 }
@@ -221,10 +216,6 @@ extension SmilesExplorerHomeViewController {
 // MARK: - SERVER CALLS -
 extension SmilesExplorerHomeViewController {
     
-    private func getSections(isSubscribed: Bool) {
-        self.input.send(.getSections(categoryID: categoryId, type: isSubscribed ? "SUBSCRIBED" : "UNSUBSCRIBED"))
-    }
-    
     private func homeAPICalls() {
         
         if let sectionDetails = self.smilesExplorerSections?.sectionDetails, !sectionDetails.isEmpty {
@@ -233,36 +224,26 @@ extension SmilesExplorerHomeViewController {
                 guard let sectionIdentifier = element.sectionIdentifier, !sectionIdentifier.isEmpty else {
                     return
                 }
-                if let section = SmilesExplorerSectionIdentifier(rawValue: sectionIdentifier), section != .topPlaceholder {
+                guard let section = SmilesExplorerSectionIdentifier(rawValue: sectionIdentifier) else { return }
+                if section != .topPlaceholder {
                     sections.append(SmilesExplorerSectionData(index: index, identifier: section))
                 }
-                switch SmilesExplorerSectionIdentifier(rawValue: sectionIdentifier) {
+                switch section {
                 case .header:
                     configureHeaderSection()
                 case .footer:
-                    configureFooterSection()
-                case .tickets:
-                    if let response = OffersCategoryResponseModel.fromModuleFile() {
-                        self.dataSource?.dataSources?[index] = TableViewDataSource.make(forOffers: response, data: "#FFFFFF", isDummy: true, completion: nil)
+                    if let response = ExplorerSubscriptionBannerResponse.fromModuleFile(), let footer = response.footer {
+                        let title = smilesExplorerSections?.sectionDetails?.first(where: { $0.sectionIdentifier == SmilesExplorerSectionIdentifier.topPlaceholder.rawValue })?.title
+                        self.dataSource?.dataSources?[index] = TableViewDataSource.make(footer: footer, title: title, data: element.backgroundColor ?? "FFFFFF", isDummy: true)
                     }
-                    self.input.send(.getTickets(categoryId: self.categoryId, tag: sectionIdentifier, pageNo: 0))
-                    break
-                case .exclusiveDeals:
+                    viewModel.getSubscriptionBannerDetails()
+                case .tickets, .exclusiveDeals, .bogoOffers:
                     if let response = OffersCategoryResponseModel.fromModuleFile() {
-                        self.dataSource?.dataSources?[index] = TableViewDataSource.make(forBogoHomeOffers: response, data: "#FFFFFF", isDummy: true, completion: nil)
+                        self.dataSource?.dataSources?[index] = TableViewDataSource.make(forOffers: response.offers ?? [], data: "FFFFFF", isDummy: true, title: element.title, subtitle: element.subTitle, offersIcon: response.iconImageUrl, section: section)
                     }
-                    self.input.send(.exclusiveDeals(categoryId: self.categoryId, tag: sectionIdentifier, pageNo: 0))
-                    break
-                case .bogoOffers:
-                    if let response = OffersCategoryResponseModel.fromModuleFile() {
-                        self.dataSource?.dataSources?[index] = TableViewDataSource.make(forBogoHomeOffers: response, data: "#FFFFFF", isDummy: true, completion: nil)
-                    }
-                    self.input.send(.getBogo(categoryId: self.categoryId, tag: sectionIdentifier, pageNo: 0))
-                    break
+                    self.viewModel.getOffers(tag: SectionTypeTag(rawValue: section.rawValue) ?? .tickets)
                 case .topPlaceholder:
                     break
-                    
-                default: break
                 }
             }
         }
@@ -275,92 +256,51 @@ extension SmilesExplorerHomeViewController {
     
     private func configureHeaderSection() {
         
-        if let headerSectionIndex = getSectionIndex(for: .header) {
-            dataSource?.dataSources?[headerSectionIndex] = TableViewDataSource(models: [], reuseIdentifier: "", data: "#FFFFFF", cellConfigurator: { _, _, _, _ in })
+        if let headerSectionIndex = getSectionIndex(for: .header), let sectionData = smilesExplorerSections?.sectionDetails?[headerSectionIndex] {
+            dataSource?.dataSources?[headerSectionIndex] = TableViewDataSource.make(header: HomeHeaderResponse(headerImage: sectionData.backgroundImage, headerTitle: sectionData.title), data: self.smilesExplorerSections?.sectionDetails?[headerSectionIndex].backgroundColor ?? "#FFFFFF", isDummy: false)
             configureDataSource()
         }
         
     }
     
-    private func configureFooterSection() {
+    private func configureFooterSection(with response: ExplorerSubscriptionBannerResponse) {
         
-        if let footerSectionIndex = getSectionIndex(for: .footer) {
-            if let footer = smilesExplorerSections?.sectionDetails?.first(where: { section in
-                return section.sectionIdentifier == SmilesExplorerSectionIdentifier.footer.rawValue
-            }), let backgroundImage = footer.backgroundImage {
-                dataSource?.dataSources?[footerSectionIndex] = TableViewDataSource(models: [backgroundImage], reuseIdentifier: "SmilesExplorerFooterTableViewCell", data: "#FFFFFF", cellConfigurator: { (url, cell, data, indexPath) in
-                    guard let cell = cell as? SmilesExplorerFooterTableViewCell else { return }
-                    cell.footerconfiguration = self.smilesExplorerSections?.sectionDetails?[footerSectionIndex]
-                    cell.setupValues(url: url)
-                    cell.getMembership = { [weak self] in
-                        // Setup navigation for membership
-                        SmilesExplorerRouter.shared.pushSubscriptionVC(navVC: self?.navigationController, delegate: self?.delegate)
-                    }
-                })
-                configureDataSource()
-            }
-        }else{
-                self.configureHideSection(for: .footer, dataSource: SectionDetailDO.self)
+        if let footer = response.footer, let footerSectionIndex = getSectionIndex(for: .footer) {
+            let topPlaceholder = smilesExplorerSections?.sectionDetails?.first(where: { $0.sectionIdentifier == SmilesExplorerSectionIdentifier.topPlaceholder.rawValue })
+            self.dataSource?.dataSources?[footerSectionIndex] = TableViewDataSource.make(footer: footer, title: topPlaceholder?.title, data: "FFFFFF", delegate: self)
+        } else {
+            self.configureHideSection(for: .footer, dataSource: SectionDetailDO.self)
         }
         
     }
     
-    fileprivate func configureExclusiveOffers(with exclusiveOffersResponse: OffersCategoryResponseModel) {
-        self.offersListing = exclusiveOffersResponse
-        self.offers.append(contentsOf: exclusiveOffersResponse.offers ?? [])
-        if !offers.isEmpty, let offerslisting = self.offersListing {
-            if let offersCategoryIndex = getSectionIndex(for: .exclusiveDeals) {
-                self.dataSource?.dataSources?[offersCategoryIndex] = TableViewDataSource.make(forBogoHomeOffers: offerslisting, data: self.smilesExplorerSections?.sectionDetails?[offersCategoryIndex].backgroundColor ?? "#FFFFFF", completion: { explorerOffer in
-                    print(explorerOffer)
-                    
-                })
+    fileprivate func configureOffers(with response: OffersCategoryResponseModel, section: SmilesExplorerSectionIdentifier) {
+        var offers = [OfferDO]()
+        switch section {
+        case .tickets:
+            offers = tickets
+            ticketsResponse = response
+        case .exclusiveDeals:
+            offers = self.offers
+            exclusiveDealsResponse = response
+        case .bogoOffers:
+            offers = bogoOffer
+            bogoOffersResponse = response
+        default: break
+        }
+        offers.append(contentsOf: response.offers ?? [])
+        if !offers.isEmpty {
+            if let offersIndex = getSectionIndex(for: section),
+               let sectionDetails = self.smilesExplorerSections?.sectionDetails?[offersIndex] {
+                self.dataSource?.dataSources?[offersIndex] = TableViewDataSource.make(forOffers: offers, data: sectionDetails.backgroundColor ?? "#FFFFFF", title: sectionDetails.title, subtitle: sectionDetails.subTitle, offersIcon: response.iconImageUrl, section: section, delegate: self)
                 self.configureDataSource()
             }
         } else {
-            if self.offers.isEmpty {
-                self.configureHideSection(for: .exclusiveDeals, dataSource: OffersCategoryResponseModel.self)
+            if offers.isEmpty {
+                self.configureHideSection(for: section, dataSource: OffersCategoryResponseModel.self)
             }
         }
     }
-    
-    
-    fileprivate func configureTickets(with exclusiveOffersResponse: OffersCategoryResponseModel) {
-        self.offersListing = exclusiveOffersResponse
-        self.tickets.append(contentsOf: exclusiveOffersResponse.offers ?? [])
-        if !self.tickets.isEmpty, let offerslisting = self.offersListing {
-            if let offersCategoryIndex = getSectionIndex(for: .tickets) {
-                self.dataSource?.dataSources?[offersCategoryIndex] = TableViewDataSource.make(forOffers: offerslisting, data: self.smilesExplorerSections?.sectionDetails?[offersCategoryIndex].backgroundColor ?? "#FFFFFF", completion: { explorerOffer in
-                    print(explorerOffer)
-                    
-                })
-                self.configureDataSource()
-            }
-        } else {
-            if self.tickets.isEmpty {
-                self.configureHideSection(for: .tickets, dataSource: OffersCategoryResponseModel.self)
-            }
-        }
-    }
-    
-    
-    fileprivate func configureBogoOffers(with exclusiveOffersResponse: OffersCategoryResponseModel) {
-        self.offersListing = exclusiveOffersResponse
-        self.bogoOffer.append(contentsOf: exclusiveOffersResponse.offers ?? [])
-        if !self.bogoOffer.isEmpty , let offerslisting = self.offersListing{
-            if let offersCategoryIndex = getSectionIndex(for: .bogoOffers) {
-                self.dataSource?.dataSources?[offersCategoryIndex] = TableViewDataSource.make(forBogoHomeOffers: offerslisting, data: self.smilesExplorerSections?.sectionDetails?[offersCategoryIndex].backgroundColor ?? "#FFFFFF", completion: { explorerOffer in
-                    print(explorerOffer)
-                    
-                })
-                self.configureDataSource()
-            }
-        } else {
-            if self.bogoOffer.isEmpty {
-                self.configureHideSection(for: .bogoOffers, dataSource: OffersCategoryResponseModel.self)
-            }
-        }
-    }
-    
     
 
     fileprivate func configureHideSection<T>(for section: SmilesExplorerSectionIdentifier, dataSource: T.Type) {
@@ -415,3 +355,41 @@ extension SmilesExplorerHomeViewController: AppHeaderDelegate {
     }
 }
 
+// MARK: - HOME OFFERS DELEGATE -
+extension SmilesExplorerHomeViewController: HomeOffersDelegate {
+    
+    func showOfferDetails(offer: OfferDO) {
+        SmilesExplorerRouter.shared.showOfferDetailPopup(viewcontroller: self, dependence: offer, delegate: delegate)
+    }
+    
+    func showOffersList(section: SmilesExplorerSectionIdentifier) {
+        var response: OffersCategoryResponseModel?
+        switch section {
+        case .tickets:
+            response = ticketsResponse
+        case .exclusiveDeals:
+            response = exclusiveDealsResponse
+        case .bogoOffers:
+            response = bogoOffersResponse
+        default: break
+        }
+        guard let response, let offersIndex = getSectionIndex(for: section),
+                                let sectionDetails = self.smilesExplorerSections?.sectionDetails?[offersIndex] else { return }
+        let dependence = ExplorerOffersListingDependance(categoryId: viewModel.categoryId ?? ExplorerConstants.explorerCategoryID, title: sectionDetails.title ?? "", offersResponse: response, offersTag: SectionTypeTag(rawValue: section.rawValue) ?? .tickets)
+        SmilesExplorerRouter.shared.pushOffersListingVC(navVC: navigationController, dependence: dependence,delegate: delegate)
+    }
+    
+}
+
+// MARK: - HOME FOOTER DELEGATE -
+extension SmilesExplorerHomeViewController: ExplorerHomeFooterDelegate {
+    
+    func getMembershipPressed() {
+        SmilesExplorerRouter.shared.pushSubscriptionVC(navVC: navigationController, delegate: delegate)
+    }
+    
+    func faqsPressed() {
+        SmilesExplorerRouter.shared.pushFAQsVC(navVC: navigationController)
+    }
+    
+}

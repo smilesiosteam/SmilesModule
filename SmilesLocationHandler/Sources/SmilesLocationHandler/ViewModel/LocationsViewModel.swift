@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Abdul Rehman Amjad on 30/05/2023.
 //
@@ -12,28 +12,32 @@ import CoreLocation
 
 class LocationsViewModel: NSObject {
     
-    let locationService = LocationBaseServices()
-    
     // MARK: - INPUT. View event methods
     enum Input {
-        case getPlaceFromLocation(isUpdated:Bool)
-        case updateUserLocation(userInfo: NSDictionary?, request: RegisterLocationRequest?)
+        case getPlaceFromLocation
+        case updateUserLocation(location: CLLocation, withUserInfo: Bool)
         case registerUserLocation(location: CLLocation?)
+        case getUserLocation(location: CLLocation?)
     }
     
     enum Output {
-        case fetchPlaceFromLocationDidSucceed(response:String,isUpdated:Bool)
-        case fetchPlaceFromLocationDidFail(error: Error,isUpdated:Bool)
+        case fetchPlaceFromLocationDidSucceed(response: String)
+        case fetchPlaceFromLocationDidFail(error: NetworkError?)
         
         case updateUserLocationDidSucceed(response : RegisterLocationResponse)
-        case updateUserLocationDidFail(error: Error)
+        case updateUserLocationDidFail(error: NetworkError)
         
         case registerUserLocationDidSucceed(response: RegisterLocationResponse,location: CLLocation?)
-        case registerUserLocationDidFail(error: Error)
+        case registerUserLocationDidFail(error: NetworkError)
+        
+        case getUserLocationDidSucceed(response: RegisterLocationResponse,location: CLLocation?)
+        case getUserLocationDidFail(error: NetworkError)
         
     }
     
     // MARK: -- Variables
+    private var setLocationViewModel = SetLocationViewModel()
+    private var setLocationInput: PassthroughSubject<SetLocationViewModel.Input, Never> = .init()
     private var output: PassthroughSubject<Output, Never> = .init()
     private var cancellables = Set<AnyCancellable>()
     var fireEvent: ((String) -> Void)?
@@ -46,90 +50,74 @@ extension LocationsViewModel {
         output = PassthroughSubject<Output, Never>()
         input.sink { [weak self] event in
             switch event {
-            case .getPlaceFromLocation(let isUpdated):
-                self?.getPlaceFromLocation(isUpdated: isUpdated)
+            case .getPlaceFromLocation:
+                self?.bind(to: self?.setLocationViewModel ?? SetLocationViewModel())
+                self?.getLocationName()
                 
-            case .updateUserLocation(userInfo: let userInfo, request: let request):
-                self?.updateUserLocation(userInfo: userInfo, request: request)
+            case .updateUserLocation(let location, let withUserInfo):
+                self?.bind(to: self?.setLocationViewModel ?? SetLocationViewModel())
+                self?.setLocationInput.send(.updateUserLocation(location: location, withUserInfo: withUserInfo))
                 
             case .registerUserLocation(location: let location):
-                self?.registerUserLocation(location)
+                self?.bind(to: self?.setLocationViewModel ?? SetLocationViewModel())
+                self?.setLocationInput.send(.registerUserLocation(location: location))
                 
+            case .getUserLocation(location: let location):
+                self?.bind(to: self?.setLocationViewModel ?? SetLocationViewModel())
+                self?.setLocationInput.send(.getUserLocation(location: location))
             }
         }.store(in: &cancellables)
         return output.eraseToAnyPublisher()
     }
     
-    func getPlaceFromLocation(isUpdated:Bool){
+    private func getLocationName() {
+        
         if let location = LocationStateSaver.getLocationInfo() {
             if let latitude = location.latitude, let longitude = location.longitude {
                 let userLocation = CLLocation(latitude: Double(latitude).asDoubleOrEmpty(), longitude: Double(longitude).asDoubleOrEmpty())
-                
-                locationService.getPlaceFromLocation(userLocation) {[weak self]  place in
-                    if !place.isEmpty {
-                        self?.output.send(.fetchPlaceFromLocationDidSucceed(response: place, isUpdated: isUpdated))
-                    }else{
-                        self?.output.send(.fetchPlaceFromLocationDidFail(error:NetworkError.noResponse("Place is empty"), isUpdated: isUpdated))
-                        
-                    }
-                }
-            }else{
-                
-                output.send(.fetchPlaceFromLocationDidFail(error:NetworkError.noResponse("Lat long not found"),isUpdated: isUpdated))
+                setLocationInput.send(.getLocationName(coordinates: userLocation))
+            } else{
+                output.send(.fetchPlaceFromLocationDidFail(error:NetworkError.noResponse("Lat long not found")))
             }
-            
         } else {
-            output.send(.fetchPlaceFromLocationDidFail(error:NetworkError.noResponse("Lat long not found"),isUpdated: isUpdated))
-        }
-    }
-    
-    
-    
-    func updateUserLocation(userInfo: NSDictionary?, request: RegisterLocationRequest?){
-        if let userInfo  = userInfo{
-            if let locationModel = userInfo["location"] as? SearchLocationResponseModel {
-                let userLocationInfo = RegisterLocationRequest()
-                if let userInfo = LocationStateSaver.getLocationInfo() {
-                    userLocationInfo.userInfo = userInfo
-                }
-                
-                userLocationInfo.userInfo?.latitude = "\(locationModel.lat ?? 0.0)"
-                userLocationInfo.userInfo?.longitude = "\(locationModel.long ?? 0.0)"
-
-                callUpdateLocationService(userLocationInfo)
-            }else{
-                output.send(.updateUserLocationDidFail(error:NetworkError.noResponse("model is not as search")))
-            }
-        }else if let request = request{
-            callUpdateLocationService(request)
-        }else{
-            output.send(.updateUserLocationDidFail(error:NetworkError.noResponse("model is not as search")))
+            output.send(.fetchPlaceFromLocationDidFail(error:NetworkError.noResponse("Lat long not found")))
         }
         
     }
     
-    private func callUpdateLocationService(_ userLocationInfo: RegisterLocationRequest) {
-        locationService.updateUserLocationRequest(request: userLocationInfo) { [weak self] response in
-            self?.output.send(.updateUserLocationDidSucceed(response: response))
-        } failureBlock: { [weak self] error in
-            self?.output.send(.updateUserLocationDidFail(error:NetworkError.noResponse("no response")))
-        }
-    }
-    
-    
-    
-    
-    func registerUserLocation(_ location: CLLocation?) {
-        
-        locationService.registerLocation(location) { [weak self] response in
-            self?.output.send(.registerUserLocationDidSucceed(response: response,location: location))
-        } failureBlock: { [weak self] error in
-            self?.fireEvent?("location_registered_fail")
-            self?.output.send(.registerUserLocationDidFail(error:NetworkError.noResponse("location_registered_fail")))
-        }
-        
-    }
 }
-        
-        
+
+// MARK: - VIEMODEL BINDING -
+extension LocationsViewModel {
     
+    func bind(to setLocationViewModel: SetLocationViewModel) {
+        setLocationInput = PassthroughSubject<SetLocationViewModel.Input, Never>()
+        let output = setLocationViewModel.transform(input: setLocationInput.eraseToAnyPublisher())
+        output
+            .sink { [weak self] event in
+                switch event {
+                case .registerUserLocationDidSucceed(let response, let location):
+                    self?.output.send(.registerUserLocationDidSucceed(response: response,location: location))
+                case .registerUserLocationDidFail(let error):
+                    self?.fireEvent?(Constants.AnalyticsEvent.locationRegistrationFailed)
+                    self?.output.send(.registerUserLocationDidFail(error: error))
+                case .updateUserLocationDidSucceed(let response):
+                    self?.output.send(.updateUserLocationDidSucceed(response: response))
+                case .updateUserLocationDidFail(let error):
+                    self?.output.send(.updateUserLocationDidFail(error: error))
+                case .getUserLocationDidSucceed(let response, let location):
+                    self?.output.send(.getUserLocationDidSucceed(response: response, location: location))
+                case .getUserLocationDidFail(let error):
+                    self?.fireEvent?(Constants.AnalyticsEvent.locationRegistrationFailed)
+                    self?.output.send(.getUserLocationDidFail(error: error))
+                case .fetchLocationNameDidSucceed(let name):
+                    self?.output.send(.fetchPlaceFromLocationDidSucceed(response: name))
+                case .fetchLocationNameDidFail(let error):
+                    self?.output.send(.fetchPlaceFromLocationDidFail(error: error))
+                default: break
+                }
+            }.store(in: &cancellables)
+    }
+    
+}
+

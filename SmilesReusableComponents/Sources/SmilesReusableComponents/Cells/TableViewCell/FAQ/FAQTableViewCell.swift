@@ -14,11 +14,8 @@ import SmilesFontsManager
 public class FAQTableViewCell: UITableViewCell{
 
     // MARK: - OUTLETS -
-    
-    @IBOutlet weak var containerStackView: UIStackView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dropdownImageView: UIImageView!
-    @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var bottomView: UIView!
     
@@ -41,19 +38,16 @@ public class FAQTableViewCell: UITableViewCell{
     }
     
     
-    public func setupCell(model:FaqsDetail) {
+    public func setupCell(model: FaqsDetail) {
         
         titleLabel.text = model.faqTitle
         descriptionLabel.attributedText(model.faqContent.asStringOrEmpty().htmlToAttributedString,
-                                        style: .smilesBody2,
+                                        style: .smilesBody3,
                                         alignment: AppCommonMethods.languageIsArabic() ? .right : .left)
-        dropdownImageView.image = UIImage(named: (model.isHidden ?? true) ? "faq_dropdown" : "faq_collapse",
+        dropdownImageView.image = UIImage(named: (model.isHidden ?? true) ? "expand" : "collapse",
                                           in: .module, compatibleWith: nil)
         titleLabel.semanticContentAttribute = AppCommonMethods.languageIsArabic() ? .forceRightToLeft : .forceLeftToRight
         
     }
-    
-    
-    
     
 }

@@ -8,6 +8,7 @@
 import Foundation
 
 public enum SectionTypeTag: String {
-    case exclusiveDealsStories = "EXCLUSIVE_DEALS"
-    case exclusiveDealsBogoOffers = "BOGO_OFFERS"
+    case tickets = "TICKETS"
+    case exclusiveDeals = "EXCLUSIVE_DEALS"
+    case bogoOffers = "BOGO_OFFERS"
 }

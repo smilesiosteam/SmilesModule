@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "googlemaps-sp",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/YAtechnologies/GoogleMaps-SP.git",
+      "state" : {
+        "revision" : "684ea6db362feaefdfcff89356e446bec8bcde3d",
+        "version" : "7.2.0"
+      }
+    },
+    {
       "identity" : "lottie-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/airbnb/lottie-ios.git",
@@ -42,7 +51,16 @@
       "location" : "https://github.com/smilesiosteam/NetworkingLayer.git",
       "state" : {
         "branch" : "main",
-        "revision" : "ddcfd44bd223db33cc8dc2a19c6235f8cd167d9f"
+        "revision" : "c8b98037b148244ffb0347748e683b42e1badf1c"
+      }
+    },
+    {
+      "identity" : "nvactivityindicatorview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ninjaprox/NVActivityIndicatorView.git",
+      "state" : {
+        "revision" : "bcb52371f2259254bac6690f92bb474a61768c47",
+        "version" : "5.1.1"
       }
     },
     {
@@ -78,7 +96,7 @@
       "location" : "https://github.com/smilesiosteam/SmilesBaseMainRequest.git",
       "state" : {
         "branch" : "main",
-        "revision" : "a8275beebe22d78e75e5fb6ca6420f808249977a"
+        "revision" : "196b65fd71c0b23ccb87c05161213fda752c1fe3"
       }
     },
     {
@@ -105,7 +123,16 @@
       "location" : "https://github.com/smilesiosteam/SmilesLanguageManager.git",
       "state" : {
         "branch" : "main",
-        "revision" : "d70bc6f7a910dd4e7dcae9224b4988500cd1006e"
+        "revision" : "bcaf6af165e819a4ad2aaf91bb959a7339051eaa"
+      }
+    },
+    {
+      "identity" : "smilesloader",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/smilesiosteam/SmilesLoader.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "8ffd156b804769121ab91c3cc729e418efbb540d"
       }
     },
     {
@@ -114,7 +141,7 @@
       "location" : "https://github.com/smilesiosteam/SmilesLocationHandler.git",
       "state" : {
         "branch" : "main",
-        "revision" : "878b8c812467d8d6954fb06dbc68adf33fe42f20"
+        "revision" : "ff864e53cda91db6878aa0aa8af745ea98f7eb91"
       }
     },
     {
@@ -123,7 +150,7 @@
       "location" : "https://github.com/smilesiosteam/SmilesStorage.git",
       "state" : {
         "branch" : "main",
-        "revision" : "89a57c302aab530f033ba35f001b09cfee822707"
+        "revision" : "83b0670cfb6ed00a1379ebf8826922589e5dbcbd"
       }
     },
     {
@@ -132,7 +159,7 @@
       "location" : "https://github.com/smilesiosteam/SmilesUtilities.git",
       "state" : {
         "branch" : "main",
-        "revision" : "fe62a50aa33ccb8e69615c91808ccaf13fcf7afa"
+        "revision" : "38dbf4e7154ea2619b3a1f24d324b57e2710b957"
       }
     }
   ],

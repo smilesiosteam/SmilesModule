@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Abdul Rehman Amjad on 30/05/2023.
 //
@@ -11,16 +11,21 @@ import SmilesBaseMainRequestManager
 
 @objc public class LocationStateSaver: NSObject {
     
-    public static func saveLocationInfo(_ userLocation: AppUserInfo?) {
+    public static func saveLocationInfo(_ userLocation: AppUserInfo?, isFromMamba: Bool) {
         if let userLoc = userLocation {
-            UserDefaults.standard.set(try! PropertyListEncoder().encode(userLoc), forKey: UserDefaultKeys.locationSaver)
-            SmilesBaseMainRequestManager.shared.baseMainRequestConfigs?.userInfo = userLoc
+            let previousInfo = getLocationInfo()
+            if isFromMamba {
+                previousInfo?.locationId = userLoc.locationId
+                previousInfo?.mambaId = userLoc.mambaId
+            }
+            UserDefaults.standard.set(try? PropertyListEncoder().encode(isFromMamba ? previousInfo : userLoc), forKey: UserDefaultKeys.locationSaver)
+            SmilesBaseMainRequestManager.shared.baseMainRequestConfigs?.userInfo = isFromMamba ? previousInfo : userLoc
         }
     }
 
     public static func getLocationInfo() -> AppUserInfo? {
         if let userLocation = UserDefaults.standard.data(forKey: UserDefaultKeys.locationSaver) {
-            return try! PropertyListDecoder().decode(AppUserInfo.self, from: userLocation)
+            return try? PropertyListDecoder().decode(AppUserInfo.self, from: userLocation)
         }
         return nil
     }
@@ -34,19 +39,19 @@ import SmilesBaseMainRequestManager
     
     public static func saveRecentLocationObject (_ location: [SearchLocationResponseModel]?) {
         if let loc = location {
-            UserDefaults.standard.set(try! PropertyListEncoder().encode(loc), forKey: UserDefaultKeys.recentLocationSaver)
+            UserDefaults.standard.set(try? PropertyListEncoder().encode(loc), forKey: UserDefaultKeys.recentLocationSaver)
         }
     }
     
     public static func getRecentLocations() -> [SearchLocationResponseModel]? {
         if let location = UserDefaults.standard.data(forKey: UserDefaultKeys.recentLocationSaver) {
-            return try! PropertyListDecoder().decode([SearchLocationResponseModel].self, from: location)
+            return try? PropertyListDecoder().decode([SearchLocationResponseModel].self, from: location)
         }
         return nil
     }
     
     public static func removeRecentLocations() {
-        UserDefaults.standard.removeObject(forKey: UserDefaultKeys.recentLocationSaver)
+        UserDefaults.standard.removeObject(forKey: Constants.Keys.recentLocation)
     }
     
     //MARK: - Check Rating View
@@ -69,6 +74,15 @@ import SmilesBaseMainRequestManager
         }
     }
     
+    @objc public func checkIfLatLongIsNil() -> Bool {
+        if let loc = LocationStateSaver.getLocationInfo()?.location,!loc.isEmpty {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    
     @objc public func checkIfMambaIdIsNil() -> Bool {
         if let _ = LocationStateSaver.getLocationInfo()?.mambaId {
             return false
@@ -84,4 +98,5 @@ import SmilesBaseMainRequestManager
             return nil
         }
     }
+    
 }

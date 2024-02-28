@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Abdul Rehman Amjad on 30/05/2023.
 //
@@ -12,6 +12,7 @@ import SmilesUtilities
 
 public protocol LocationUpdateProtocol: AnyObject {
     func locationDidUpdateToLocation(location: CLLocation?, placemark: CLPlacemark?)
+    func locationIsAllowedByUser(isAllowed:Bool)
 }
 
 public final class LocationManager: NSObject {
@@ -45,6 +46,7 @@ public final class LocationManager: NSObject {
         // setup code
         return instance
     }()
+    public var isLocationEnabled = false
     
     private override init() {}
     
@@ -66,6 +68,8 @@ public final class LocationManager: NSObject {
     }
     
     public func destroyLocationManager() {
+        self.delegate = nil
+        locationManager?.stopUpdatingLocation()
         locationManager?.delegate = nil
         locationManager = nil
         lastLocation = nil
@@ -106,19 +110,25 @@ public final class LocationManager: NSObject {
         lastLocation = nil
     }
     
+    public func startUpdatingLocation() {
+        getLocation { (_, _) in }
+    }
+    
     //MARK:- Public Methods
     
     /// Check if location is enabled on device or not
     ///
     /// - Parameter completionHandler: nil
     /// - Returns: Bool
-    public func isLocationEnabled() -> Bool {
-        return CLLocationManager.locationServicesEnabled()
-    }
-    
-    public func isEnabled() -> Bool {
-        guard CLLocationManager.locationServicesEnabled() else { return false }
-        return [.authorizedAlways, .authorizedWhenInUse].contains(CLLocationManager.authorizationStatus())
+    public func isLocationEnabled(completion: @escaping ((Bool) -> Void)) {
+        switch CLLocationManager.authorizationStatus() {
+            case .notDetermined, .restricted, .denied:
+                completion(false)
+            case .authorizedAlways, .authorizedWhenInUse:
+            completion(true)
+            @unknown default:
+            completion(false)
+        }
     }
     
     /// Get current location
@@ -343,10 +353,13 @@ extension LocationManager: CLLocationManagerDelegate {
     
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         
+        LocationManager.shared.isLocationEnabled = false
         switch status {
             
         case .authorizedWhenInUse,.authorizedAlways:
             self.locationManager?.startUpdatingLocation()
+            self.delegate?.locationIsAllowedByUser(isAllowed: true)
+            LocationManager.shared.isLocationEnabled = true
             
         case .denied:
             let deniedError = NSError(
@@ -363,6 +376,8 @@ extension LocationManager: CLLocationManagerDelegate {
                 didComplete(location: nil,error: deniedError)
             }
             
+            self.delegate?.locationIsAllowedByUser(isAllowed: false)
+            
         case .restricted:
             if reverseGeocoding {
                 didComplete(location: nil,error: NSError(
@@ -376,8 +391,9 @@ extension LocationManager: CLLocationManagerDelegate {
                     userInfo: nil))
             }
             
+            self.delegate?.locationIsAllowedByUser(isAllowed: false)
         case .notDetermined:
-            self.locationManager?.requestLocation()
+            self.locationManager?.requestWhenInUseAuthorization()
             
         @unknown default:
             didComplete(location: nil,error: NSError(
@@ -387,6 +403,25 @@ extension LocationManager: CLLocationManagerDelegate {
                 [NSLocalizedDescriptionKey:LocationErrors.unknown.rawValue,
                  NSLocalizedFailureReasonErrorKey:LocationErrors.unknown.rawValue,
                  NSLocalizedRecoverySuggestionErrorKey:LocationErrors.unknown.rawValue]))
+            self.delegate?.locationIsAllowedByUser(isAllowed: false)
+        }
+    }
+    
+    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        if #available(iOS 14.0, *) {
+            switch manager.authorizationStatus {
+            case .authorizedAlways, .authorizedWhenInUse:
+                self.locationManager?.startUpdatingLocation()
+                self.delegate?.locationIsAllowedByUser(isAllowed: true)
+            case .denied, .restricted:
+                self.delegate?.locationIsAllowedByUser(isAllowed: false)
+            case .notDetermined:
+                self.locationManager?.requestWhenInUseAuthorization()
+            @unknown default:
+                break
+            }
+        } else {
+            // Fallback on earlier versions
         }
     }
     

@@ -21,15 +21,16 @@ public protocol AppHeaderDelegate: AnyObject {
     func segmentLeftBtnTapped(index: Int)
     func rewardPointsBtnTapped()
     func didTapOnBagButton()
+    func locationUpdatedSuccessfully()
+    func gotUserLocation()
 }
 
 public extension AppHeaderDelegate {
-    func showPopupForLocationSetting(){}
-    func didTapOnToolTipSearch(){}
     func locationUpdatedSuccessfully(){}
     func segmentLeftBtnTapped(index: Int) {}
     func segmentRightBtnTapped(index: Int) {}
     func didTapOnBagButton() {}
+    func gotUserLocation() {}
 }
 
 public class AppHeaderView: UIView {
@@ -138,30 +139,10 @@ public class AppHeaderView: UIView {
     }
     
         
-    public func setupHeaderView(backgroundColor: UIColor, searchBarColor: UIColor, pointsViewColor: UIColor?,  titleColor: UIColor, headerTitle: String, showHeaderNavigaton: Bool, topCurveShouldAdd: Bool = false, haveSearchBorder: Bool = false, shouldShowBag: Bool = false, isFirstLaunch: Bool = false, isGuestUser: Bool, showHeaderContent: Bool = true, toolTipInfo: ((SmilesLocationHandler?) -> (Bool,UIView))?) {
+    public func setupHeaderView(backgroundColor: UIColor, searchBarColor: UIColor, pointsViewColor: UIColor?,  titleColor: UIColor, headerTitle: String, showHeaderNavigaton: Bool, topCurveShouldAdd: Bool = false, haveSearchBorder: Bool = false, shouldShowBag: Bool = false, isFirstLaunch: Bool = false, isGuestUser: Bool, controllerType: LocationCheckEntryPoint = .fromDashboard, showHeaderContent: Bool = true) {
         self.isGuestUser = isGuestUser
-        smilesLocationHandler = SmilesLocationHandler.init(controller: delegate as? UIViewController, isFirstLaunch: isFirstLaunch)
-        smilesLocationHandler?.smilesLocationHandlerDelegate = self
+        smilesLocationHandler = SmilesLocationHandler.init(delegate: self, isFirstLaunch: isFirstLaunch,controllerType: controllerType)
         smilesLocationHandler?.fireEvent = fireEvent
-        smilesLocationHandler?.showLocationToolTip = { [weak self] in
-            guard let self, let toolTipInfo = toolTipInfo else { return }
-            let (needToshow,contentVu) = toolTipInfo(self.smilesLocationHandler)
-            if needToshow {
-                self.smilesLocationHandler?.toolTipForLocationShown = true
-                self.locationToolTip = EasyTipView(contentView: contentVu, preferences: EasyTipViewPreference.locationTipPreferences(), delegate: self.smilesLocationHandler as? EasyTipViewDelegate)
-                self.locationToolTip?.show(forView: self.locationArrowImageView)
-            }
-        }
-        smilesLocationHandler?.dismissLocationToolTip = { [weak self] in
-            guard let self else { return }
-            UIView.animate(withDuration: 0.2) {
-                self.locationToolTip?.dismiss()
-                self.smilesLocationHandler?.toolTipForLocationShown = false
-            }
-        }
-//        NotificationCenter.default.removeObserver(self, name: .LocationUpdated, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(locationUpdatedManually(_:)), name: .LocationUpdated, object: nil)
-        
         
         view_container.backgroundColor = self.bodyViewCompact.isHidden ? backgroundColor : .white
         searchView.backgroundColor = searchBarColor
@@ -327,14 +308,10 @@ public class AppHeaderView: UIView {
     public func setLocation(locationName: String, locationNickName: String) {
     print("------ locationName \(locationName)0000000 locationNickName ---- \(locationNickName)")
         
-        if locationNickName.isEmpty || locationNickName == "" {
-            self.locationNickName.text = "CurrentLocation".localizedString
-        } else {
-            self.locationNickName.text = locationNickName.upperCamelCased
-        }
+        self.locationNickName.text = locationNickName
         self.locationTitleLabel.text = locationName
         
-        if isGuestUser && !LocationManager.shared.isEnabled() {
+        if isGuestUser && !LocationManager.shared.isLocationEnabled {
             locationView.isHidden = true
         } else {
             locationView.isHidden = false
@@ -406,11 +383,6 @@ public class AppHeaderView: UIView {
         return nib.instantiate(withOwner: self, options: nil).first as? UIView
     }
     
-    @objc public func locationUpdatedManually(_ notification: Notification) {
-        smilesLocationHandler?.locationUpdatedManually(notification)
-    }
-    
-    
     public func buttonStatus(isButton1Selected: Bool) {
         if isButton1Selected {
             bottomSegment1Icon.image = bottomSegment1Icon.image?.imageWithColor(color1: .foodEnableColor)
@@ -439,20 +411,18 @@ public class AppHeaderView: UIView {
 }
 
 
-extension AppHeaderView : SmilesLocationHandlerDelegate{
-    public func showPopupForLocationSetting() {
-        self.delegate?.showPopupForLocationSetting()
-    }
+extension AppHeaderView : SmilesLocationHandlerDelegate {
     
-    public func searchBtnTappedOnToolTip() {
-        self.delegate?.didTapOnToolTipSearch()
-    }
-    
-    public func getUserLocationWith(locationName: String, andLocationNickName: String) {
+    public func showUserLocation(locationName: String, andLocationNickName: String) {
         self.setLocation(locationName: locationName, locationNickName: andLocationNickName)
+    }
+    
+    public func gotUserLocation() {
+        self.delegate?.gotUserLocation()
     }
     
     public func locationUpdatedSuccessfully(){
         self.delegate?.locationUpdatedSuccessfully()
     }
+    
 }

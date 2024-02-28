@@ -40,9 +40,9 @@ class TopOffersCollectionViewCell: UICollectionViewCell {
             image.isHidden = false
             lottieAnimationView.isHidden = true
             if !bannerImage.isEmpty {
-                self.image.setImageWithUrlString(bannerImage) { image in
+                self.image.setImageWithUrlString(bannerImage) { [weak self] image in
                     if let image = image {
-                        self.image.image = image
+                        self?.image.image = image
                     }
                 }
             }
