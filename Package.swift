@@ -95,7 +95,7 @@ let package = Package(
 
 
 extension String {
-    static let SmilesMonoRepo = "SmilesModule"
+    static let SmilesMonoRepo = "SmilesMonoRepo"
     static let SmilesFontsManager = "SmilesFontsManager"
     static let SmilesUtilities = "SmilesUtilities"
     static let SmilesStorage = "SmilesStorage"
@@ -275,7 +275,11 @@ extension Target {
                                                        .AnalyticsSmiles,
                                                        .SmilesUtilities,
                                                        .NetworkingLayer,
-                                                       .SmilesBaseMainRequestManager],
+                                                       .SmilesBaseMainRequestManager,
+                                                       .SmilesLoader,
+                                                       .GoogleMaps,
+                                                       .GooglePlaces,
+                                                       .SmilesLanguageManager],
                                         path: "SmilesLocationHandler/Sources")
     
     static let SmilesScratchHandler = target(name: .SmilesScratchHandler,
@@ -408,7 +412,7 @@ extension Target {
                                         path: "SmilesOrderTracking/Sources")
     
     static let AnalyticsSmiles = target(name: .AnalyticsSmiles,
-                                        path: "AnalyticsSmiles/Sources")
+                                        path: "SmilesAnalytics/Sources")
     
     static let SmilesPageController = target(name: .SmilesPageController,
                                         path: "SmilesPageController/Sources")
@@ -457,6 +461,7 @@ extension Target.Dependency {
     static let SmilesExplorer = byName(name: .SmilesExplorer)
     
     static let GoogleMaps =   product(name: "GoogleMaps", package: "GoogleMaps-SP")
+    static let GooglePlaces =   product(name: "GooglePlaces", package: "GoogleMaps-SP")
     static let Cosmos =   product(name: "Cosmos", package: "Cosmos")
     static let PlaceholderUITextView = product(name: "PlaceholderUITextView", package: "PlaceholderUITextView")
     static let Lottie = product(name: "Lottie", package: "lottie-ios")
