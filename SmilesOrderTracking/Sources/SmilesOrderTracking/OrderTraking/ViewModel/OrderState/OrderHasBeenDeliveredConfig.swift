@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct OrderHasBeenDeliveredConfig: OrderTrackable, GetSupportable {
+struct OrderHasBeenDeliveredConfig: OrderTrackable, GetSupportable, CanceledOrderConfigProtocol {
     var response: OrderTrackingStatusResponse
     func buildConfig() -> GetSupportModel {
         var progressBar = orderProgressBar
@@ -25,14 +25,15 @@ struct OrderHasBeenDeliveredConfig: OrderTrackable, GetSupportable {
         var progressBar = orderProgressBar
         progressBar.step = .completed
         progressBar.hideTimeLabel = true
-        
-        let location = orderLocation
-        
         var cells: [TrackingCellType] = [
             .progressBar(model: progressBar)
         ]
         
-        cells.append(.location(model: location))
+        if orderType == .pickup {
+            cells.append(.orderActions(model: getOrderActionsModel()))
+        } else {
+            cells.append(.location(model: orderLocation))
+        }
         
         if let orderRateModel {
             cells.append(.rating(model: orderRateModel))

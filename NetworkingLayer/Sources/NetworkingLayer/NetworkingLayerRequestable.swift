@@ -76,8 +76,6 @@ public class NetworkingLayerRequestable: NSObject, Requestable {
                         return NetworkError.noResponse("ServiceFail".localizedString)
                     default: break
                     }
-                case _ as DecodingError:
-                    return NetworkError.unableToParseData("ServiceFail".localizedString)
                 default: break
                 }
                 if let networkError = error as? NetworkError {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct InTheKitchenOrderConfig: OrderTrackable, GetSupportable, AnimationHeaderProtocol {
+struct InTheKitchenOrderConfig: OrderTrackable, GetSupportable, CanceledOrderConfigProtocol, AnimationHeaderProtocol {
     var response: OrderTrackingStatusResponse
     
     func buildConfig() -> GetSupportModel {
@@ -33,8 +33,11 @@ struct InTheKitchenOrderConfig: OrderTrackable, GetSupportable, AnimationHeaderP
         
         if orderType == .pickup {
             cells.append(.driver(model: getDriverModel()))
+            cells.append(.orderActions(model: getOrderActionsModel()))
+        } else {
+            cells.append(.location(model: orderLocation))
         }
-        cells.append(.location(model: orderLocation))
+       
         if let orderPoint {
             cells.append(.point(model: orderPoint))
         }

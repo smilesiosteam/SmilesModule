@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct NetworkRequest {
+public struct NetworkRequest: Equatable {
     let url: String
     let headers: [String: String]?
     let body: Data?

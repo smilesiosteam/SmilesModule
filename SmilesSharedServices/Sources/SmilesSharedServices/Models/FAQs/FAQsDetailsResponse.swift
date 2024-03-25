@@ -22,8 +22,20 @@ public class FAQsDetailsResponse : BaseMainResponse {
         try super.init(from: decoder)
     }
     
+    public override init() {
+            faqsDetails = nil
+            super.init()
+        }
+    
 }
 
+extension FAQsDetailsResponse :Equatable {
+    public static func == (lhs: FAQsDetailsResponse, rhs: FAQsDetailsResponse) -> Bool {
+        return true
+    }
+    
+    
+}
 public class FaqsDetail : Codable {
     
     public let faqContent : String?

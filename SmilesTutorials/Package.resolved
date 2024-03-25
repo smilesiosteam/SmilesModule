@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/CryptoSwift.git",
       "state" : {
-        "revision" : "32f641cf24fc7abc1c591a2025e9f2f572648b0f",
-        "version" : "1.7.2"
+        "revision" : "7892a123f7e8d0fe62f9f03728b17bbd4f94df5c",
+        "version" : "1.8.1"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://github.com/smilesiosteam/LottieAnimationManager.git",
       "state" : {
         "branch" : "main",
-        "revision" : "f25b53cbc39d2938144ba4cc64a0b00f49348ffb"
+        "revision" : "f36032ff43f4dfb7f630fbabb222019bc56e7541"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDWebImage/SDWebImage.git",
       "state" : {
-        "revision" : "c51ba84499268ea3020e6aee9e229c0f56b9d924",
-        "version" : "5.16.0"
+        "revision" : "73b9397cfbd902f606572964055464903b1d84c6",
+        "version" : "5.19.0"
       }
     },
     {
@@ -51,7 +51,7 @@
       "location" : "https://github.com/smilesiosteam/SmilesBaseMainRequest.git",
       "state" : {
         "branch" : "main",
-        "revision" : "40ef84d1b1c2d887ce3f6c17dec5c37977c20a9f"
+        "revision" : "7e2d5d880baf451931da03fc8f1e41055a1fee93"
       }
     },
     {
@@ -60,7 +60,7 @@
       "location" : "https://github.com/smilesiosteam/SmilesFontsManager.git",
       "state" : {
         "branch" : "main",
-        "revision" : "6cd2eca9539a6ccacbe19762bb9b3b6af74481e5"
+        "revision" : "08f10b60a92cf507339595161289eabd55c9ab10"
       }
     },
     {
@@ -69,7 +69,7 @@
       "location" : "https://github.com/smilesiosteam/SmilesLanguageManager.git",
       "state" : {
         "branch" : "main",
-        "revision" : "ec56617c4be91c35133f4fe59b403947cbcad1af"
+        "revision" : "bcaf6af165e819a4ad2aaf91bb959a7339051eaa"
       }
     },
     {
@@ -78,7 +78,7 @@
       "location" : "https://github.com/smilesiosteam/SmilesPageControl.git",
       "state" : {
         "branch" : "main",
-        "revision" : "dd96e43d08046dda138f7c3b305a9ce41814437d"
+        "revision" : "433bf5965963ce27fc1a78480ec3627cc3425e5c"
       }
     },
     {
@@ -87,7 +87,7 @@
       "location" : "https://github.com/smilesiosteam/SmilesStorage.git",
       "state" : {
         "branch" : "main",
-        "revision" : "89a57c302aab530f033ba35f001b09cfee822707"
+        "revision" : "83b0670cfb6ed00a1379ebf8826922589e5dbcbd"
       }
     },
     {
@@ -96,7 +96,7 @@
       "location" : "https://github.com/smilesiosteam/SmilesUtilities.git",
       "state" : {
         "branch" : "main",
-        "revision" : "9e47a6d1d14c910223cb527ddf7dd4bc2f14bc8c"
+        "revision" : "dc61a81c43e527dd00c29aeee321809232dfa995"
       }
     }
   ],

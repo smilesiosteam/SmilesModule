@@ -26,7 +26,7 @@ public class SmilesYoutubePopUpView: UIView, YTNibLoadable {
     @objc @IBOutlet weak public var thumbImgView: UIImageView!
     @IBOutlet weak var ytPlayerView: YTPlayerView!
     
-    @objc public var ytViewDelegate: SmilesYoutubeViewDelegate?
+    @objc public weak var ytViewDelegate: SmilesYoutubeViewDelegate?
     @objc var nibName = "SmilesYoutubePopUpView"
     @objc var contentView: UIView?
     

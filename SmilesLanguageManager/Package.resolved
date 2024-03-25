@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "smilesstorage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/smilesiosteam/SmilesStorage.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "83b0670cfb6ed00a1379ebf8826922589e5dbcbd"
+      }
+    }
+  ],
+  "version" : 2
+}

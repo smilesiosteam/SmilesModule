@@ -34,7 +34,7 @@ public class OcassionThemesVC: UIViewController {
     var sections = [TableSectionData<OccasionThemesSectionIdentifier>]()
     //[OccasionThemesSectionData]()
     var occasionThemesSectionsData: GetSectionsResponseModel?
-    private var themeId: Int = 1
+    private var themeId: Int?
     private var delegate:SmilesOccasionThemesHomeDelegate?
     var isHeaderExpanding = false
     var topBannerObject: TopPlaceholderThemeResponse?
@@ -89,6 +89,8 @@ public class OcassionThemesVC: UIViewController {
         let customizable: CellRegisterable? = OccasionThemesCellRegistration()
         customizable?.register(for: self.tableView)
         self.tableView.backgroundColor = .white
+        let inset = UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
+        tableView.contentInset = inset
     }
     
     //MARK: Navigation Bar Setup
@@ -143,7 +145,7 @@ public class OcassionThemesVC: UIViewController {
 extension OcassionThemesVC {
     
     private func getSections() {
-        self.input.send(.getSections(themeId: self.themeId))
+        self.input.send(.getSections(themeId: self.themeId ?? 1))
     }
     
     private func homeAPICalls() {

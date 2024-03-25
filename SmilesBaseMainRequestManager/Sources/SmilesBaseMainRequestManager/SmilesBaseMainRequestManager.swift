@@ -15,9 +15,11 @@ import SmilesUtilities
     private var _baseMainRequestConfigs: SmilesBaseMainRequest?
     
     public var baseMainRequestConfigs: SmilesBaseMainRequest? {
+        var value: SmilesBaseMainRequest?
         serialQueue.sync {
-            _baseMainRequestConfigs
+            value = _baseMainRequestConfigs
         }
+        return value
     }
     
     @objc public func setupBaseRequestConfigs(additionalInfo: [BaseMainResponseAdditionalInfo], appVersion: String?, authToken: String?, channel: String?, deviceId: String?, handsetModel: String?, imsi: String?, isGpsEnabled: Bool = false, isNotificationEnabled: Bool = false, langauge: String?, msisdn: String?, osVersion: String?, token: String?, hashId: String?, deviceHashId: String?, userInfo: AppUserInfo?, deviceHashIdV2: String?) {
@@ -33,7 +35,7 @@ import SmilesUtilities
     }
     
     @objc public func getConfigsAsDictionary() -> [String: Any] {
-        guard let configs = baseMainRequestConfigs else { return [:] }
+        guard let configs = _baseMainRequestConfigs else { return [:] }
         return (try? JSONSerialization.jsonObject(with: JSONEncoder().encode(configs))) as? [String: Any] ?? [:]
     }
     
