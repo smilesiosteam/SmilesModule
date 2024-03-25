@@ -12,6 +12,7 @@ import SmilesSharedServices
 import NetworkingLayer
 import SmilesOffers
 import SmilesBanners
+import SmilesReusableComponents
 
 final class SmilesTouristHomeViewModel {
     
@@ -71,7 +72,6 @@ final class SmilesTouristHomeViewModel {
     public var rewardPointsUseCaseInput: PassthroughSubject<RewardPointsViewModel.Input, Never> = .init()
     public var wishListUseCaseInput: PassthroughSubject<WishListViewModel.Input, Never> = .init()
     // MARK: - Delegate
-    var navigationDelegate: SmilesExplorerHomeDelegate?
     private let sectionsViewModel = SectionsViewModel()
     
     var personalizationEventSource:String?
@@ -80,7 +80,6 @@ final class SmilesTouristHomeViewModel {
     var isUserSubscribed:Bool?
     var subscriptionType:ExplorerPackage?
     var voucherCode:String?
-    var delegate :SmilesExplorerHomeDelegate?
     var rewardPointIcon:String?
     var rewardPoint:Int?
     var platinumLimiReached:Bool?

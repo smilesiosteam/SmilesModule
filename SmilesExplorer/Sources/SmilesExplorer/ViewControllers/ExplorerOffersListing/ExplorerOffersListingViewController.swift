@@ -23,7 +23,7 @@ class ExplorerOffersListingViewController: UIViewController {
     var offers = [OfferDO]()
     var offersPage = 1
     private var cancellables = Set<AnyCancellable>()
-    public var delegate: SmilesExplorerHomeDelegate? = nil
+    public weak var delegate: SmilesExplorerHomeDelegate? = nil
     
     
     // MARK: - INITIALIZERS -
@@ -41,6 +41,11 @@ class ExplorerOffersListingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setUpNavigationBar()
     }
     
     private func setupViews() {

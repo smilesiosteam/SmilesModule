@@ -174,8 +174,9 @@ public class AppHeaderView: UIView {
             
             self.searchView.RoundedViewConrner(cornerRadius: 12.0)
             self.searchViewCompact.RoundedViewConrner(cornerRadius: 12.0)
-            self.searchIconImageView.image = UIImage(named: "searchRevampIcon")?.withTintColor(searchLabelColor, renderingMode: .alwaysOriginal)
-            self.searchIconImageViewCompact.image = UIImage(named: "searchRevampIcon")?.withTintColor(.appRevampHomeSearchColor, renderingMode: .alwaysOriginal)
+            let searchIcon = UIImage(named: "searchRevampIcon", in: .main, compatibleWith: nil)
+            self.searchIconImageView.image = searchIcon?.withTintColor(searchLabelColor, renderingMode: .alwaysOriginal)
+            self.searchIconImageViewCompact.image = searchIcon?.withTintColor(.appRevampHomeSearchColor, renderingMode: .alwaysOriginal)
             self.lottieAnimationView.RoundedViewConrner(cornerRadius: self.lottieAnimationView.bounds.height / 2)
         }
         
@@ -200,7 +201,7 @@ public class AppHeaderView: UIView {
         if isGuestUser {
             pointsLabel.text = "0"
             pointsIconImageView.isHidden = false
-            pointsIconImageView.image = UIImage(named: "smileyHearts")
+            pointsIconImageView.image = UIImage(named: "smileyHearts", in: .main, compatibleWith: nil)
         }
         
         if !showHeaderContent {
@@ -312,9 +313,9 @@ public class AppHeaderView: UIView {
         self.locationTitleLabel.text = locationName
         
         if isGuestUser && !LocationManager.shared.isLocationEnabled {
-            locationView.isHidden = true
+            locationView.isUserInteractionEnabled = false
         } else {
-            locationView.isHidden = false
+            locationView.isUserInteractionEnabled = true
         }
     }
     

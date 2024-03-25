@@ -351,7 +351,7 @@ extension Target {
     static let AppHeader = target(name: .AppHeader,
                                         dependencies: [.LottieAnimationManager,
                                                        .SmilesLocationHandler],
-                                        path: "AppHeader/Sources")
+                                        path: "SmilesAppHeader/Sources")
     
     static let SmilesPersonalizationEvent = target(name: .SmilesPersonalizationEvent,
                                         dependencies: [.SmilesUtilities,
