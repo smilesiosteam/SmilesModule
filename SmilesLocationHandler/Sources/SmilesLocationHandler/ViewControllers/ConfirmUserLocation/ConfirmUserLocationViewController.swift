@@ -196,7 +196,7 @@ class ConfirmUserLocationViewController: UIViewController, SmilesPresentableMess
     
     private func setupMapPin() {
         
-        pinView = LocationPinView(frame: CGRect(x: 0, y: 0, width: mapView.frame.width, height: pinViewHeight))
+        pinView = LocationPinView(frame: CGRect(x: 0, y: 0, width: mapViewContainer.frame.width, height: pinViewHeight))
         pinView.isUserInteractionEnabled = false
         self.view.addSubview(pinView)
         
