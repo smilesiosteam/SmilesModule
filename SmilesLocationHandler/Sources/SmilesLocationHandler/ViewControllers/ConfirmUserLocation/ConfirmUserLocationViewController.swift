@@ -184,6 +184,9 @@ class ConfirmUserLocationViewController: UIViewController, SmilesPresentableMess
     private func setupMap() {
         let options = GMSMapViewOptions()
         mapView = GMSMapView(options:options) //initialized with default values
+        mapViewContainer.addSubview(mapView)
+        mapView.bindFrameToSuperviewBounds()
+        
         mapView.delegate = self
         mapView.settings.myLocationButton = false
         mapView.isMyLocationEnabled = true
