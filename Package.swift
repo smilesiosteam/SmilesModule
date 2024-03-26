@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SmilesModule",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ],
     products: [
         .SmilesFontsManager,
@@ -52,7 +52,8 @@ let package = Package(
         .package(url: "https://github.com/youtube/youtube-ios-player-helper.git", from: "1.0.4"),
         .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.0"),
         .package(url: "https://github.com/wxxsw/SwiftTheme.git", branch: "master"),
-        .package(url: "https://github.com/YAtechnologies/GoogleMaps-SP.git", .upToNextMinor(from: "7.2.0")),
+        .package(url: "https://github.com/googlemaps/ios-maps-sdk", exact: "8.4.0"),
+        .package(url: "https://github.com/googlemaps/ios-places-sdk", from: "8.3.0"),
         .package(url: "https://github.com/sabarics/PlaceholderUITextView.git", branch: "master"),
         .package(url: "https://github.com/evgenyneu/Cosmos.git", .upToNextMajor(from: "23.0.0")),
     ],
@@ -278,6 +279,8 @@ extension Target {
                                                        .SmilesBaseMainRequestManager,
                                                        .SmilesLoader,
                                                        .GoogleMaps,
+                                                       .GoogleMapsBase,
+                                                       .GoogleMapsCore,
                                                        .GooglePlaces,
                                                        .SmilesLanguageManager],
                                         path: "SmilesLocationHandler/Sources")
@@ -369,7 +372,8 @@ extension Target {
                                                        .SmilesBanners,
                                                        .AppHeader,
                                                        .SmilesFilterAndSort,
-                                                       .SmilesStoriesManager],
+                                                       .SmilesStoriesManager,
+                                                       .SmilesReusableComponents],
                                         path: "SmilesExplorer/Sources")
     
     static let SmilesReusableComponents = target(name: .SmilesReusableComponents,
@@ -398,7 +402,9 @@ extension Target {
     static let SmilesOrderTracking = target(name: .SmilesOrderTracking,
                                                dependencies: [.SmilesUtilities,
                                                               .SmilesFontsManager,
-                                                              .GoogleMaps,
+                                                              .GoogleMaps, 
+                                                              .GoogleMapsBase,
+                                                              .GoogleMapsCore,
                                                               .SmilesBaseMainRequestManager,
                                                               .NetworkingLayer,
                                                               .LottieAnimationManager,
@@ -460,8 +466,11 @@ extension Target.Dependency {
     static let SmilesFilterAndSort = byName(name: .SmilesFilterAndSort)
     static let SmilesExplorer = byName(name: .SmilesExplorer)
     
-    static let GoogleMaps =   product(name: "GoogleMaps", package: "GoogleMaps-SP")
-    static let GooglePlaces =   product(name: "GooglePlaces", package: "GoogleMaps-SP")
+    static let GoogleMaps =   product(name: "GoogleMaps", package: "ios-maps-sdk")
+    static let GoogleMapsBase =   product(name: "GoogleMapsBase", package: "ios-maps-sdk")
+    static let GoogleMapsCore =   product(name: "GoogleMapsCore", package: "ios-maps-sdk")
+
+    static let GooglePlaces =   product(name: "GooglePlaces", package: "ios-places-sdk")
     static let Cosmos =   product(name: "Cosmos", package: "Cosmos")
     static let PlaceholderUITextView = product(name: "PlaceholderUITextView", package: "PlaceholderUITextView")
     static let Lottie = product(name: "Lottie", package: "lottie-ios")

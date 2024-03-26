@@ -19,15 +19,6 @@
       }
     },
     {
-      "identity" : "networkinglayer",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/smilesiosteam/NetworkingLayer.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "1d69917fbd71570c307e326ae69cb2da2a3b7eec"
-      }
-    },
-    {
       "identity" : "sdwebimage",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDWebImage/SDWebImage.git",
@@ -43,51 +34,6 @@
       "state" : {
         "revision" : "739a4f5d78731bebc48811c75fa9e1f4c4cef23e",
         "version" : "1.30.4"
-      }
-    },
-    {
-      "identity" : "smilesbasemainrequest",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/smilesiosteam/SmilesBaseMainRequest.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "7e2d5d880baf451931da03fc8f1e41055a1fee93"
-      }
-    },
-    {
-      "identity" : "smilesfontsmanager",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/smilesiosteam/SmilesFontsManager.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "08f10b60a92cf507339595161289eabd55c9ab10"
-      }
-    },
-    {
-      "identity" : "smileslanguagemanager",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/smilesiosteam/SmilesLanguageManager.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "bcaf6af165e819a4ad2aaf91bb959a7339051eaa"
-      }
-    },
-    {
-      "identity" : "smilesstorage",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/smilesiosteam/SmilesStorage.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "83b0670cfb6ed00a1379ebf8826922589e5dbcbd"
-      }
-    },
-    {
-      "identity" : "smilesutilities",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/smilesiosteam/SmilesUtilities.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "dc61a81c43e527dd00c29aeee321809232dfa995"
       }
     }
   ],

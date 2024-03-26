@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SmilesOcassionThemes",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -22,7 +22,7 @@ let package = Package(
         .package(path: "../SmilesSharedServices"),
         .package(path: "../SmilesLanguageManager"),
         .package(path: "../SmilesLoader"),
-        .package(path: "../SmilesBaseMainRequest"),
+        .package(path: "../SmilesBaseMainRequestManager"),
         .package(path: "../SmilesOffers"),
         .package(path: "../SmilesBanners"),
         .package(path: "../SmilesStoriesManager")
@@ -36,7 +36,7 @@ let package = Package(
                 .product(name: "SmilesSharedServices", package: "SmilesSharedServices"),
                 .product(name: "SmilesLanguageManager", package: "SmilesLanguageManager"),
                 .product(name: "SmilesLoader", package: "SmilesLoader"),
-                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequest"),
+                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequestManager"),
                 .product(name: "SmilesOffers", package: "SmilesOffers"),
                 .product(name: "SmilesBanners", package: "SmilesBanners"),
                 .product(name: "SmilesStoriesManager", package: "SmilesStoriesManager")

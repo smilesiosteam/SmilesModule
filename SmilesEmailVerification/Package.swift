@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SmilesEmailVerification",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -21,7 +21,7 @@ let package = Package(
         .package(path: "../SmilesLanguageManager"),
         .package(path: "../SmilesFontsManager"),
         .package(path: "../NetworkingLayer"),
-        .package(path: "../SmilesBaseMainRequest"),
+        .package(path: "../SmilesBaseMainRequestManager"),
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.0")),
         .package(url: "https://github.com/Juanpe/SkeletonView.git", from: "1.7.0"),
         .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0"),
@@ -36,7 +36,7 @@ let package = Package(
                 .product(name: "SmilesUtilities", package: "SmilesUtilities"),
                 .product(name: "SmilesLanguageManager", package: "SmilesLanguageManager"),
                 .product(name: "CryptoSwift", package: "CryptoSwift"),
-                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequest"),
+                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequestManager"),
                 .product(name: "SkeletonView", package: "SkeletonView"),
                 .product(name: "SDWebImage", package: "SDWebImage"),
                 .product(name: "SmilesFontsManager", package: "SmilesFontsManager"),

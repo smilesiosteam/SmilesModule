@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SmilesManCity",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -24,7 +24,7 @@ let package = Package(
         .package(path: "../SmilesLocationHandler"),
         .package(path: "../SmilesLanguageManager"),
         .package(path: "../SmilesLoader"),
-        .package(path: "../SmilesBaseMainRequest"),
+        .package(path: "../SmilesBaseMainRequestManager"),
         .package(path: "../SmilesOffers"),
         .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.0"),
         .package(path: "../SmilesStoriesManager"),
@@ -45,7 +45,7 @@ let package = Package(
                 .product(name: "SmilesLocationHandler", package: "SmilesLocationHandler"),
                 .product(name: "SmilesLanguageManager", package: "SmilesLanguageManager"),
                 .product(name: "SmilesLoader", package: "SmilesLoader"),
-                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequest"),
+                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequestManager"),
                 .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
                 .product(name: "SmilesOffers", package: "SmilesOffers"),
                 .product(name: "SmilesStoriesManager", package: "SmilesStoriesManager"),

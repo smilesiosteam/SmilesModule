@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SmilesExplorer",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -27,7 +27,8 @@ let package = Package(
         .package(path: "../SmilesBanners"),
         .package(path: "../SmilesAppHeader"),
         .package(path: "../SmilesFilterAndSort"),
-        .package(path: "../SmilesStoriesManager")
+        .package(path: "../SmilesStoriesManager"),
+        .package(path: "../SmilesReusableComponents")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -40,12 +41,13 @@ let package = Package(
                 .product(name: "SmilesSharedServices", package: "SmilesSharedServices"),
                 .product(name: "SmilesLanguageManager", package: "SmilesLanguageManager"),
                 .product(name: "SmilesLoader", package: "SmilesLoader"),
-                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequest"),
+                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequestManager"),
                 .product(name: "SmilesOffers", package: "SmilesOffers"),
                 .product(name: "SmilesBanners", package: "SmilesBanners"),
                 .product(name: "AppHeader", package: "SmilesAppHeader"),
                 .product(name: "SmilesFilterAndSort", package: "SmilesFilterAndSort"),
-                .product(name: "SmilesStoriesManager", package: "SmilesStoriesManager")
+                .product(name: "SmilesStoriesManager", package: "SmilesStoriesManager"),
+                .product(name: "SmilesReusableComponents", package: "SmilesReusableComponents")
             ],
             resources: [
                 .process("Resources")

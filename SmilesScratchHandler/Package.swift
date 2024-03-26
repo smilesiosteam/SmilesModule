@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SmilesScratchHandler",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -20,7 +20,7 @@ let package = Package(
         .package(path: "../SmilesUtilities"),
         .package(path: "../SmilesFontsManager"),
         .package(path: "../SmilesLanguageManager"),
-        .package(path: "../SmilesBaseMainRequest"),
+        .package(path: "../SmilesBaseMainRequestManager"),
         .package(path: "../NetworkingLayer"),
         .package(path: "../SmilesLoader")
     ],
@@ -33,7 +33,7 @@ let package = Package(
                 .product(name: "SmilesLanguageManager", package: "SmilesLanguageManager"),
                 .product(name: "SmilesFontsManager", package: "SmilesFontsManager"),
                 .product(name: "SmilesUtilities", package: "SmilesUtilities"),
-                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequest"),
+                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequestManager"),
                 .product(name: "NetworkingLayer", package: "NetworkingLayer"),
                 .product(name: "SmilesLoader", package: "SmilesLoader")
             ],

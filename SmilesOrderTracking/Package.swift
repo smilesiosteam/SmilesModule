@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SmilesOrderTracking",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -29,7 +29,7 @@ let package = Package(
         .package(url: "https://github.com/evgenyneu/Cosmos.git", .upToNextMajor(from: "23.0.0")),
         .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0"),
         .package(url: "https://github.com/sabarics/PlaceholderUITextView.git", branch: "master"),
-        .package(url: "https://github.com/YAtechnologies/GoogleMaps-SP.git", .upToNextMinor(from: "7.2.0")),
+        .package(url: "https://github.com/googlemaps/ios-maps-sdk", exact: "8.4.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -39,8 +39,7 @@ let package = Package(
             dependencies: [
                 .product(name: "SmilesUtilities", package: "SmilesUtilities"),
                 .product(name: "SmilesFontsManager", package: "SmilesFontsManager"),
-                .product(name: "GoogleMaps", package: "GoogleMaps-SP"),
-                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequest"),
+                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequestManager"),
                 .product(name: "NetworkingLayer", package: "NetworkingLayer"),
                 .product(name: "Cosmos", package: "Cosmos"),
                 .product(name: "LottieAnimationManager", package: "LottieAnimationManager"),
@@ -48,7 +47,11 @@ let package = Package(
                 .product(name: "SDWebImage", package: "SDWebImage"),
                 .product(name: "PlaceholderUITextView", package: "PlaceholderUITextView"),
                 .product(name: "SmilesScratchHandler", package: "SmilesScratchHandler"),
-                .product(name: "SmilesSharedServices", package: "SmilesSharedServices")
+                .product(name: "SmilesSharedServices", package: "SmilesSharedServices"),
+                // Google
+                .product(name: "GoogleMaps", package: "ios-maps-sdk"),
+                .product(name: "GoogleMapsBase", package: "ios-maps-sdk"),
+                .product(name: "GoogleMapsCore", package: "ios-maps-sdk")
             ],
             resources: [.process("Resources")]
         ),

@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SmilesLocationHandler",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ], products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -19,10 +19,11 @@ let package = Package(
         .package(path: "../SmilesUtilities"),
         .package(path: "../NetworkingLayer"),
         .package(path: "../SmilesAnalytics"),
-        .package(path: "../SmilesBaseMainRequest"),
+        .package(path: "../SmilesBaseMainRequestManager"),
         .package(path: "../SmilesLanguageManager"),
-        .package(url: "https://github.com/YAtechnologies/GoogleMaps-SP.git", .upToNextMinor(from: "7.2.0")),
-        .package(path: "../SmilesLoader")
+        .package(path: "../SmilesLoader"),
+        .package(url: "https://github.com/googlemaps/ios-maps-sdk", exact: "8.4.0"),
+        .package(url: "https://github.com/googlemaps/ios-places-sdk", from: "8.3.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -34,13 +35,16 @@ let package = Package(
                 .product(name: "SmilesUtilities", package: "SmilesUtilities"),
                 .product(name: "NetworkingLayer", package: "NetworkingLayer"),
                 .product(name: "AnalyticsSmiles", package: "SmilesAnalytics"),
-                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequest"),
+                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequestManager"),
                 .product(name: "SmilesLanguageManager", package: "SmilesLanguageManager"),
-                .product(name: "GoogleMaps", package: "GoogleMaps-SP"),
-                .product(name: "GooglePlaces", package: "GoogleMaps-SP"),
-                .product(name: "SmilesLoader", package: "SmilesLoader")
+                .product(name: "SmilesLoader", package: "SmilesLoader"),
+                // Google
+                .product(name: "GoogleMaps", package: "ios-maps-sdk"),
+                .product(name: "GoogleMapsBase", package: "ios-maps-sdk"),
+                .product(name: "GoogleMapsCore", package: "ios-maps-sdk"),
+                .product(name: "GooglePlaces", package: "ios-places-sdk")
             ],
-            path: "Sources",
+            path: "Sources/SmilesLocationHandler",
             resources: [
                 .process("Resources")
             ])

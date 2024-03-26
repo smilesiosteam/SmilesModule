@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SmilesStoriesManager",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ], products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -15,7 +15,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(path: "../SmilesBaseMainRequest"),
+        .package(path: "../SmilesBaseMainRequestManager"),
         .package(path: "../NetworkingLayer"),
         .package(path: "../SmilesLoader"),
         .package(path: "../SmilesLanguageManager"),
@@ -30,7 +30,7 @@ let package = Package(
         .target(
             name: "SmilesStoriesManager",
             dependencies: [
-                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequest"),
+                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequestManager"),
                 .product(name: "NetworkingLayer", package: "NetworkingLayer"),
                 .product(name: "SmilesLoader", package: "SmilesLoader"),
                 .product(name: "SmilesLanguageManager", package: "SmilesLanguageManager"),
