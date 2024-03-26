@@ -15,7 +15,7 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     
     // MARK: - Outlets
     @IBOutlet private weak var driverImage: UIImageView!
-    @IBOutlet private weak var mapView: GMSMapView!
+    @IBOutlet private weak var mapViewContainer: GMSMapView!
     @IBOutlet private weak var dismissButton: UIButton!
     @IBOutlet private weak var animationView: UIView!
     @IBOutlet private weak var supportButton: UIButton!
@@ -26,7 +26,8 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     private var isFirstTimeSetCamera = false
     private var moveMarker: MoveMarker?
     private var driverMarker :GMSMarker?
-    
+    var mapView: GMSMapView!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         setupMap()
@@ -98,6 +99,11 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     }
     
     private func setupMap() {
+        let options = GMSMapViewOptions()
+        mapView = GMSMapView(options:options) //initialized with default values
+        mapViewContainer.addSubview(mapView)
+        mapView.bindFrameToSuperviewBounds()
+        
         mapView.isUserInteractionEnabled = false
         if let styleURL = Bundle.main.url(forResource: "MapsStyling", withExtension: "json"),
            let mapStyle = try? GMSMapStyle(contentsOfFileURL: styleURL) {

@@ -25,8 +25,10 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "SmilesSharedServices",
-            dependencies: ["SmilesBaseMainRequestManager",
-                           "NetworkingLayer"],
-            path: "Sources/SmilesSharedServices")
+            dependencies: [
+                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequestManager"),
+                .product(name: "NetworkingLayer", package: "NetworkingLayer")
+            ]
+        )
     ]
 )

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -19,7 +19,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="443" height="410"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tcp-Bw-59I" customClass="GMSMapView">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tcp-Bw-59I">
                         <rect key="frame" x="0.0" y="0.0" width="443" height="340"/>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="wHE-Br-azS">
@@ -102,7 +102,7 @@
                 <outlet property="dismissButton" destination="u8L-fj-VdJ" id="ztD-Y0-kSL"/>
                 <outlet property="driverImage" destination="ITG-f2-BDO" id="T08-fj-OWc"/>
                 <outlet property="headerStack" destination="wHE-Br-azS" id="HNV-Vs-lhd"/>
-                <outlet property="mapView" destination="Tcp-Bw-59I" id="yk8-zX-yMM"/>
+                <outlet property="mapViewContainer" destination="Tcp-Bw-59I" id="V14-zr-uEW"/>
                 <outlet property="supportButton" destination="MO1-09-one" id="CNl-oH-GLo"/>
             </connections>
             <point key="canvasLocation" x="52.671755725190835" y="18.30985915492958"/>
