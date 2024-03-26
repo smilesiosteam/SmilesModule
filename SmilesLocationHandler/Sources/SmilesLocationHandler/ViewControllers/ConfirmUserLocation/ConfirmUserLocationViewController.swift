@@ -144,7 +144,7 @@ class ConfirmUserLocationViewController: UIViewController, SmilesPresentableMess
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        pinView.center = CGPoint(x: mapView.center.x, y: mapView.center.y - (pinViewHeight / 2))
+        pinView.center = CGPoint(x: mapViewContainer.center.x, y: mapViewContainer.center.y - (pinViewHeight / 2))
     }
     
     private func setupViews() {
