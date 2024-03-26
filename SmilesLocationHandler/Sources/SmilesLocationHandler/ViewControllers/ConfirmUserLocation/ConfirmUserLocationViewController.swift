@@ -25,7 +25,7 @@ enum ConfirmLocationSourceScreen {
 class ConfirmUserLocationViewController: UIViewController, SmilesPresentableMessage {
 
     // MARK: - OUTLETS -
-    @IBOutlet weak var mapView: GMSMapView!
+    @IBOutlet weak var mapViewContainer: UIView!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var currentLocationButton: UICustomButton!
     
@@ -44,6 +44,8 @@ class ConfirmUserLocationViewController: UIViewController, SmilesPresentableMess
     private var sourceScreen: ConfirmLocationSourceScreen = .addAddressViewController
     private var pinView: LocationPinView!
     private var pinViewHeight: CGFloat = 113
+    
+    var mapView: GMSMapView!
     
     // MARK: - ACTIONS -
     @IBAction func searchPressed(_ sender: Any) {
@@ -180,7 +182,8 @@ class ConfirmUserLocationViewController: UIViewController, SmilesPresentableMess
     }
     
     private func setupMap() {
-        
+        let options = GMSMapViewOptions()
+        mapView = GMSMapView(options:options) //initialized with default values
         mapView.delegate = self
         mapView.settings.myLocationButton = false
         mapView.isMyLocationEnabled = true
