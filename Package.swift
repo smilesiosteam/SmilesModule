@@ -58,7 +58,7 @@ let package = Package(
         .package(url: "https://github.com/evgenyneu/Cosmos.git", .upToNextMajor(from: "23.0.0")),
     ],
     targets: [
-        .SmilesMonoRepo,
+        .SmilesModule,
         .SmilesFontsManager,
         .SmilesStorage,
         .SmilesUtilities,
@@ -96,7 +96,7 @@ let package = Package(
 
 
 extension String {
-    static let SmilesMonoRepo = "SmilesMonoRepo"
+    static let SmilesModule = "SmilesModule"
     static let SmilesFontsManager = "SmilesFontsManager"
     static let SmilesUtilities = "SmilesUtilities"
     static let SmilesStorage = "SmilesStorage"
@@ -176,7 +176,7 @@ extension Product {
 
 extension Target {
    
-    static let SmilesMonoRepo = target(name: .SmilesMonoRepo)
+    static let SmilesModule = target(name: .SmilesModule)
     
     static let SmilesStorage = target(name: .SmilesStorage, dependencies: [],
                                            path: "SmilesStorage/Sources")
